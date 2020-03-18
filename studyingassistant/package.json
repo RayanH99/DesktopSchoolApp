@@ -1,0 +1,14 @@
+{
+  "name": "studyingassistant",
+  "version": "1.0.0",
+  "description": "desktop application to make studying easier for students",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Rayan and Uzair",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^8.1.1"
+  }
+}
