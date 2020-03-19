@@ -1,8 +1,8 @@
 {
-  "name": "studyingassistant",
+  "name": "studydesktopapp",
   "version": "1.0.0",
-  "description": "desktop application to make studying easier for students",
-  "main": "index.js",
+  "description": "Desktop study app",
+  "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
