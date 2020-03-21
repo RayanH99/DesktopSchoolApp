@@ -23,3 +23,9 @@ h1, h3, p
 {
     margin-top: 20px;
 }
+
+.miscBtn
+{
+    margin-left: 8px; 
+    margin-right: 8px;
+}
