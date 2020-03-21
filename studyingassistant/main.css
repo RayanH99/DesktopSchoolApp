@@ -38,4 +38,5 @@ h1, h3, p
 .hoverEffect:hover 
 {
     transform: scale(1.05);
+    box-shadow: 1px 1px 3px #a0a0a077;
 }
