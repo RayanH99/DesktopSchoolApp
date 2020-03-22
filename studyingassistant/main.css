@@ -3,15 +3,34 @@ h1, h3, p
     font-family: 'Raleway', sans-serif;
 }
 
+html
+{
+    height: 100%;
+    background-color: #f5f5f5;
+}
+
+body
+{
+    background-color: #f5f5f5!important;
+}
+
 #heading
 {
     margin-top: 30px;
     font-size: 30px;
 }
 
+#subHeading
+{
+    margin-top: 5px;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
 .container
 {
     text-align: center;
+    background-color: #f5f5f5;
 }
 
 .cardBtn
@@ -27,6 +46,11 @@ h1, h3, p
 .miscBtn
 {
     margin-left: 15px; 
+}
+
+.btn-outline-info
+{
+    background-color: white;
 }
 
 .hoverEffect
