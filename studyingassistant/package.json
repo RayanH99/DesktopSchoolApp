@@ -2,7 +2,7 @@
   "name": "studydesktopapp",
   "version": "1.0.0",
   "description": "Desktop study app",
-  "main": "scripts/main.js",
+  "main": "src/scripts/main.js",
   "scripts": {
     "start": "electron ."
   },
