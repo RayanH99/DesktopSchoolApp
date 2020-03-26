@@ -5,17 +5,24 @@
     <link rel="stylesheet" type="text/css" href="../styles/main.css">
     <link rel="stylesheet" type="text/css" href="../styles/studyPage.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
-    
     <meta charset='utf-8'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
     <div class="container">
+        <h1 id="heading">Set your study and break lengths!</h1>
         <div class="card">
             <div class="card-body">
-                <h1 id="heading">Set Study Timer</h1>
+                <div id="pomodoro-timer">25:00</div>
+                <a href="#" class="btn btn-outline-info top-buffer miscBtn">Break</a>
+                <a href="#" class="btn btn-outline-success top-buffer miscBtn">Start</a>
+                <a href="#" class="btn btn-outline-danger top-buffer miscBtn">Stop</a>
+                <a href="#" class="btn btn-outline-warning top-buffer miscBtn">Reset</a>
+                </div>
             </div>
         </div>
     </div>
+
+    <script src="../scripts/studyPage.js"></script>
 </body>
 </html>
