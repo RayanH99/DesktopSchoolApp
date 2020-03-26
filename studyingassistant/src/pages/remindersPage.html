@@ -13,7 +13,7 @@
         <h1 id="heading">MANAGE REMINDERS</h1>
         <p>What would you like to do?</p>
         <div class="row">
-            <div class="col-8">
+            <div class="col-6">
                 <ul class="remindersList">
                     <li>
                         <div class="card hoverEffect">
@@ -38,8 +38,18 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-4">
-                <input type="text" class="form-control txtField" id="newTask" placeholder="Add an item">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <label for="newTask">✏ Description</label>
+                        <input type="text" required="required" class="form-control txtField newItem" id="newTask" placeholder="Describe the task here">
+                        <label for="date">📆 Date</label>
+                        <input type="date" required="required" class="form-control newItem" id="date" name="date">
+                        <label for="time">⏰ Time</label>
+                        <input type="time" required="required" class="form-control newItem" id="time" name="time">
+                        <a href="#" class="btn btn-outline-warning cardBtn newItem">Add Reminder</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
