@@ -9,3 +9,14 @@ li
     margin-top: 0;
     text-align: left;
 }
+
+.newItem
+{
+    margin-bottom: 20px;
+}
+
+label
+{
+    text-align: left;
+    width: 100%;
+}
