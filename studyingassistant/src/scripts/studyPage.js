@@ -1,7 +1,6 @@
 var startTime = 25; // this value will change depending on what the user selects, default value is 25:00
 var time = startTime * 60; //number of seconds total
 var intervalID; //used for setInterval()
-
 var pomodoroTimer = document.getElementById('pomodoro-timer');
 
 
