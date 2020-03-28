@@ -17,10 +17,17 @@
             <div class="col-6">
                 <ul class="list-group" id="todolist">
                     <li class="list-group-item active" id="remindersTitle">To-Do List</li>
-                    <li class="list-group-item">Task 1</li>
-                    <li class="list-group-item">Task 2</li>
-                    <li class="list-group-item">Task 3</li>
-                    <li class="list-group-item">Task 4</li>
+                    <li class="list-group-item">Task 1 
+                        <button class="btn btn-outline-warning moreInfo" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            ➕
+                        </button>
+                    </li>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            <p>DATE</p>
+                            <p>TIME</p>
+                        </div>
+                    </div>
                 </ul>
             </div>
             <div class="col-6">
