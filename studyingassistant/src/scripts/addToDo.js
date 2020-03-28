@@ -14,7 +14,7 @@ for (let task = 0; task < todoItems.length; task++)
 }
 
 //submit button
-submitBtn.addEventListener("click", function() 
+submitBtn.addEventListener("click" ,function () 
 {
     var desc = document.getElementById("newTask").value;
     var dateVal = document.getElementById("date").value;
@@ -26,6 +26,7 @@ submitBtn.addEventListener("click", function()
         var newItem = document.createElement("li");
         newItem.classList.add("list-group-item");
         newItem.innerHTML = desc;
+
         //create button
         var btnDrop = document.createElement("button");
         btnDrop.classList.add("btn");
@@ -36,13 +37,15 @@ submitBtn.addEventListener("click", function()
         btnDrop.setAttribute("data-target", "#collapseExample");
         btnDrop.setAttribute("aria-expanded", "false");
         btnDrop.setAttribute("aria-controls", "collapseExample");
-        btnDrop.value = "➕";
+        btnDrop.setAttribute("onclick", "submit()");
+        btnDrop.innerHTML = "➕";
         newItem.appendChild(btnDrop);
+
         //create drop down div
         var moreInfoTab = document.createElement("div");
         moreInfoTab.classList.add("collapse");
         moreInfoTab.id = "collapseExample";
-        newItem.appendChild(moreInfoTab);
+        
         //create body of the div
         var infoCard = document.createElement("div");
         infoCard.classList.add("card");
@@ -54,8 +57,10 @@ submitBtn.addEventListener("click", function()
         infoCard.appendChild(newDate);
         infoCard.appendChild(newTime);
         moreInfoTab.appendChild(infoCard);
+
         //clear input
         document.getElementById("newTask").value = "";
         todoList.appendChild(newItem);
+        todoList.appendChild(moreInfoTab);
     }
 });
