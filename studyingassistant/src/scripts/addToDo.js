@@ -3,8 +3,11 @@ var todoItems = ['Task 2', 'Task 3', 'Task 4'];
 var submitBtn = document.getElementById("submitBtn");
 var todoList = document.getElementById("todolist");
 
-//load tasks
+var numItems = 0;
+var newTime = "";
+var inputEle = document.getElementById('time');
 
+//load tasks
 for (let task = 0; task < todoItems.length; task++)
 {
     var newItem = document.createElement("li");
@@ -16,9 +19,11 @@ for (let task = 0; task < todoItems.length; task++)
 //submit button
 submitBtn.addEventListener("click" ,function () 
 {
+    numItems++; //increase item count
+    newID = "newItem" + numItems; //creates new ID for element
     var desc = document.getElementById("newTask").value;
     var dateVal = document.getElementById("date").value;
-    var timeVal = document.getElementById("time").value;
+    var timeVal = onTimeChange();
 
     if (desc.length > 0)
     {
@@ -34,17 +39,16 @@ submitBtn.addEventListener("click" ,function ()
         btnDrop.classList.add("moreInfo");
         btnDrop.setAttribute("type", "button");
         btnDrop.setAttribute("data-toggle","collapse");
-        btnDrop.setAttribute("data-target", "#collapseExample");
+        btnDrop.setAttribute("data-target", "#" + newID);
         btnDrop.setAttribute("aria-expanded", "false");
-        btnDrop.setAttribute("aria-controls", "collapseExample");
-        btnDrop.setAttribute("onclick", "submit()");
+        btnDrop.setAttribute("aria-controls", newID);
         btnDrop.innerHTML = "➕";
         newItem.appendChild(btnDrop);
 
         //create drop down div
         var moreInfoTab = document.createElement("div");
         moreInfoTab.classList.add("collapse");
-        moreInfoTab.id = "collapseExample";
+        moreInfoTab.id = newID;
         
         //create body of the div
         var infoCard = document.createElement("div");
@@ -64,3 +68,33 @@ submitBtn.addEventListener("click" ,function ()
         todoList.appendChild(moreInfoTab);
     }
 });
+
+
+//get 12 hour format time
+function onTimeChange() 
+{
+    var timeSplit = inputEle.value.split(':'),
+        hours,
+        minutes,
+        meridian;
+        hours = timeSplit[0];
+        minutes = timeSplit[1];
+    if (hours > 12) 
+    {
+      meridian = 'PM';
+      hours -= 12;
+    } 
+    else if (hours < 12) 
+    {
+        meridian = 'AM';
+        if (hours == 0) 
+        {
+            hours = 12;
+        }
+    } 
+    else 
+    {
+        meridian = 'PM';
+    }
+    return newTime = hours + ':' + minutes + ' ' + meridian;
+}
