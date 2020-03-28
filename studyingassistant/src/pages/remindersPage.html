@@ -27,7 +27,7 @@
                         <label for="date">📆 Date</label>
                         <input type="date" required="required" class="form-control newItem" id="date" name="date">
                         <label for="time">⏰ Time</label>
-                        <input type="time" required="required" class="form-control newItem" id="time" name="time">
+                        <input type="time" onchange="onTimeChange()" required="required" class="form-control newItem" id="time" name="time">
                         <button id="submitBtn" class="btn btn-outline-warning cardBtn newItem">Add Reminder</button>
                     </div>
                 </div>
