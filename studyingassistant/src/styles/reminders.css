@@ -1,6 +1,5 @@
 li
 {
-    margin: 2px;
     margin-top: 0;
     text-align: left;
 }
@@ -25,4 +24,24 @@ label
 #remindersTitle
 {
     color: black;
+}
+
+.card-body
+{
+    text-align: left;
+}
+
+.btn.btn-outline-warning.moreInfo
+{
+    float: right;
+    border-color: transparent;
+    padding: 0;
+}
+
+.btn.btn-outline-warning.moreInfo:hover
+{
+    float: right;
+    background-color: transparent;
+    border-color: transparent;
+    padding: 0;
 }
