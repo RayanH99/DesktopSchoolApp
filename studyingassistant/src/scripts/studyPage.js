@@ -32,3 +32,13 @@ function resetTimer(){
     updateTimer();
     stopTimer();
 }
+
+function shortBreak(){
+    startTime = 5;
+    resetTimer();
+}
+
+function longBreak(){
+    startTime = 15;
+    resetTimer();
+}
