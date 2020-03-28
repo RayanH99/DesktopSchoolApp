@@ -1,19 +1,34 @@
-var todoItems = ['Task 2', 'Task 3', 'Task 4'];
+var todoItems = [
+    Task1 = {
+        Desc: "Task 1",
+        Date: "2020-03-28",
+        Time: "06:53 PM",
+        ItemID: "newItem1"
+    },
+    Task2 = {
+        Desc: "Task 2",
+        Date: "2020-03-29",
+        Time: "07:02 AM",
+        ItemID: "newItem2"
+    }
+];
 
 var submitBtn = document.getElementById("submitBtn");
 var todoList = document.getElementById("todolist");
 
-var numItems = 0;
+var numItems = todoItems.length;
 var newTime = "";
 var inputEle = document.getElementById('time');
 
 //load tasks
 for (let task = 0; task < todoItems.length; task++)
 {
-    var newItem = document.createElement("li");
-    newItem.classList.add("list-group-item");
-    newItem.innerHTML = todoItems[task];
-    todoList.appendChild(newItem);
+    console.log(todoItems[task]);
+    var newID = todoItems[task].ItemID; 
+    var desc = todoItems[task].Desc; 
+    var dateVal = todoItems[task].Date; 
+    var timeVal = todoItems[task].Time; 
+    createTask(newID, desc, dateVal, timeVal);
 }
 
 //submit button
@@ -27,45 +42,16 @@ submitBtn.addEventListener("click" ,function ()
 
     if (desc.length > 0)
     {
-        //create list item
-        var newItem = document.createElement("li");
-        newItem.classList.add("list-group-item");
-        newItem.innerHTML = desc;
-
-        //create button
-        var btnDrop = document.createElement("button");
-        btnDrop.classList.add("btn");
-        btnDrop.classList.add("btn-outline-warning");
-        btnDrop.classList.add("moreInfo");
-        btnDrop.setAttribute("type", "button");
-        btnDrop.setAttribute("data-toggle","collapse");
-        btnDrop.setAttribute("data-target", "#" + newID);
-        btnDrop.setAttribute("aria-expanded", "false");
-        btnDrop.setAttribute("aria-controls", newID);
-        btnDrop.innerHTML = "➕";
-        newItem.appendChild(btnDrop);
-
-        //create drop down div
-        var moreInfoTab = document.createElement("div");
-        moreInfoTab.classList.add("collapse");
-        moreInfoTab.id = newID;
-        
-        //create body of the div
-        var infoCard = document.createElement("div");
-        infoCard.classList.add("card");
-        infoCard.classList.add("card-body");
-        var newDate = document.createElement("p");
-        newDate.innerHTML = dateVal;
-        var newTime = document.createElement("p");
-        newTime.innerHTML = timeVal;
-        infoCard.appendChild(newDate);
-        infoCard.appendChild(newTime);
-        moreInfoTab.appendChild(infoCard);
-
+        createTask(newID, desc, dateVal, timeVal);
         //clear input
         document.getElementById("newTask").value = "";
-        todoList.appendChild(newItem);
-        todoList.appendChild(moreInfoTab);
+        document.getElementById("date").value = "";
+        document.getElementById("time").value = "";
+    }
+    else
+    {
+        //**********app seems to stop working correctly here**********
+        alert("Please fill out all required fields.");
     }
 });
 
@@ -97,4 +83,47 @@ function onTimeChange()
         meridian = 'PM';
     }
     return newTime = hours + ':' + minutes + ' ' + meridian;
+}
+
+//construct html card
+function createTask(newID, desc, dateVal, timeVal)
+{
+    //create list item
+    var newItem = document.createElement("li");
+    newItem.classList.add("list-group-item");
+    newItem.innerHTML = desc;
+
+    //create button
+    var btnDrop = document.createElement("button");
+    btnDrop.classList.add("btn");
+    btnDrop.classList.add("btn-outline-warning");
+    btnDrop.classList.add("moreInfo");
+    btnDrop.setAttribute("type", "button");
+    btnDrop.setAttribute("data-toggle","collapse");
+    btnDrop.setAttribute("data-target", "#" + newID);
+    btnDrop.setAttribute("aria-expanded", "false");
+    btnDrop.setAttribute("aria-controls", newID);
+    btnDrop.innerHTML = "➕";
+    newItem.appendChild(btnDrop);
+
+    //create drop down div
+    var moreInfoTab = document.createElement("div");
+    moreInfoTab.classList.add("collapse");
+    moreInfoTab.id = newID;
+    
+    //create body of the div
+    var infoCard = document.createElement("div");
+    infoCard.classList.add("card");
+    infoCard.classList.add("card-body");
+    var newDate = document.createElement("p");
+    newDate.innerHTML = "Date: " + dateVal;
+    var newTime = document.createElement("p");
+    newTime.innerHTML = "Time: " + timeVal;
+    infoCard.appendChild(newDate);
+    infoCard.appendChild(newTime);
+    moreInfoTab.appendChild(infoCard);
+
+    //add to list
+    todoList.appendChild(newItem);
+    todoList.appendChild(moreInfoTab);
 }
