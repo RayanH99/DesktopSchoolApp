@@ -60,6 +60,14 @@ body
     background-color: white;
 }
 
+.btn-outline-warning:hover{
+    color: white !important;
+}
+
+.btn-warning{
+    color: white !important; 
+}
+
 .hoverEffect
 {
     transition: transform .2s;
