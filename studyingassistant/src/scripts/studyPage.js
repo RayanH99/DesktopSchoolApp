@@ -33,12 +33,12 @@ function resetTimer(){
     stopTimer();
 }
 
-function shortBreak(){
-    startTime = 5;
+function setTimer(studyLength){
+    startTime = studyLength;
     resetTimer();
 }
 
-function longBreak(){
-    startTime = 15;
+function breakTimer(breakLength){
+    startTime = breakLength;
     resetTimer();
 }
