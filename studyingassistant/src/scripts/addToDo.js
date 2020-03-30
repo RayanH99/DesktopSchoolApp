@@ -95,6 +95,7 @@ function createTask(newID, desc, dateVal, timeVal)
     //create delete button
     var btnDelete = document.createElement("button");
     btnDelete.classList.add("deleteBtn");
+    btnDelete.id = "delete" + newID;
     btnDelete.innerHTML = "🗑";
     newItem.appendChild(btnDelete);
 
@@ -131,11 +132,18 @@ function createTask(newID, desc, dateVal, timeVal)
     //add to list
     todoList.appendChild(newItem);
     todoList.appendChild(moreInfoTab);
-    
-    btnDelete.setAttribute("onclick","deleteTask()");
-}
 
-function deleteTask()
-{
-    $(this).remove();
+    //deleting a todo
+    $("#delete"+newID).on("click", function(e) 
+    {
+        //search for task in list and delete
+        
+        //hide elements from display
+        $(this).parent().fadeOut(100,function()
+        {
+            $("#"+newID).remove();
+            $(this).remove();
+        });
+        e.stopPropagation();
+    });
 }
