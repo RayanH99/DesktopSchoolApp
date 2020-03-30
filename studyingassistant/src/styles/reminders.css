@@ -31,17 +31,23 @@ label
     text-align: left;
 }
 
-.btn.btn-outline-warning.moreInfo
-{
-    float: right;
-    border-color: transparent;
-    padding: 0;
-}
-
-.btn.btn-outline-warning.moreInfo:hover
+.moreInfo, .deleteBtn
 {
     float: right;
     background-color: transparent;
     border-color: transparent;
     padding: 0;
+}
+
+.moreInfo:hover, .deleteBtn:hover
+{
+    float: right;
+    background-color: transparent;
+    border-color: transparent;
+    padding: 0;
+}
+
+.hidden
+{
+    display: none;
 }

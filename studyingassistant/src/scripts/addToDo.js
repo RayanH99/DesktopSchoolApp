@@ -23,7 +23,6 @@ var inputEle = document.getElementById('time');
 //load tasks
 for (let task = 0; task < todoItems.length; task++)
 {
-    console.log(todoItems[task]);
     var newID = todoItems[task].ItemID; 
     var desc = todoItems[task].Desc; 
     var dateVal = todoItems[task].Date; 
@@ -93,17 +92,23 @@ function createTask(newID, desc, dateVal, timeVal)
     newItem.classList.add("list-group-item");
     newItem.innerHTML = desc;
 
-    //create button
+    //create delete button
+    var btnDelete = document.createElement("button");
+    btnDelete.classList.add("deleteBtn");
+    btnDelete.innerHTML = "🗑";
+    newItem.appendChild(btnDelete);
+
+    //create more info button
     var btnDrop = document.createElement("button");
-    btnDrop.classList.add("btn");
-    btnDrop.classList.add("btn-outline-warning");
+    // btnDrop.classList.add("btn");
+    // btnDrop.classList.add("btn-outline-warning");
     btnDrop.classList.add("moreInfo");
     btnDrop.setAttribute("type", "button");
     btnDrop.setAttribute("data-toggle","collapse");
     btnDrop.setAttribute("data-target", "#" + newID);
     btnDrop.setAttribute("aria-expanded", "false");
     btnDrop.setAttribute("aria-controls", newID);
-    btnDrop.innerHTML = "➕";
+    btnDrop.innerHTML = "🔻";
     newItem.appendChild(btnDrop);
 
     //create drop down div
@@ -126,4 +131,11 @@ function createTask(newID, desc, dateVal, timeVal)
     //add to list
     todoList.appendChild(newItem);
     todoList.appendChild(moreInfoTab);
+    
+    btnDelete.setAttribute("onclick","deleteTask()");
+}
+
+function deleteTask()
+{
+    $(this).remove();
 }
