@@ -1,31 +1,42 @@
 var startTime = 25; // this value will change depending on what the user selects, default value is 25:00
 var time = startTime * 60; //number of seconds total
+var totalStudiedTime = 0; 
+var studiedTime = totalStudiedTime * 60;
 var intervalID; //used for setInterval()
+var studiedID; //used for setInterval() of time studied tracker
 var pomodoroTimer = document.getElementById('pomodoro-timer');
 var taskMessage = document.getElementById('dropdownMenuButton');
 var breakMessage = document.getElementById('dropdownMenuButton2');
 var startButton = document.getElementById('startButton');
 var pauseButton = document.getElementById('stopButton');
+var timeStudied = document.getElementById('timeStudied');
+var timeOnBreak = document.getElementById('timeOnBreak');
 
+// call these once to stop clock from taking too long on first use of the setInterval function
+updateTimer(); 
+updateStudiedTime();
 
 function updateTimer(){
     let minutes = Math.floor(time/60);
     let seconds = time % 60;
-    
+
     minutes = minutes < 10 ? '0' + minutes : minutes;
     seconds = seconds < 10 ? '0' + seconds : seconds; //if seconds less than 10, make it 00, 01, 02, etc.
 
     pomodoroTimer.innerHTML = minutes + ':'+ seconds;
+    
+    
     time--;
 }
 
 function startTimer(){
     if(!intervalID){ // to prevent multiple setIntervals being queued up
-        updateTimer(); // call this once to stop clock from taking too long on first use of the setInterval function
+        
         intervalID = setInterval(updateTimer, 1000);
+        studiedID = setInterval(updateStudiedTime, 1000);
 
         startButton.classList.remove("btn-outline-info"); 
-        startButton.classList.toggle("btn-info"); //fill box with colour
+        startButton.classList.add("btn-info"); //fill box with colour
     
         pauseButton.classList.add("btn-outline-danger"); //remove colour from pause button
         pauseButton.classList.remove("btn-danger");
@@ -35,6 +46,8 @@ function startTimer(){
 function stopTimer(){
     clearInterval(intervalID);
     intervalID = 0;
+    clearInterval(studiedID);
+    studiedID = 0;
 
     pauseButton.classList.remove("btn-outline-danger"); 
     pauseButton.classList.add("btn-danger"); //fill box with colour
@@ -81,3 +94,16 @@ function breakTimer(breakLength){
     taskMessage.innerHTML = "🚀 Select Task "; //reset task select dropdown button text
     resetTimer();
 }
+
+function updateStudiedTime(){
+    let studiedMinutes = Math.floor(startStudiedTime/60);
+    let studiedSeconds = startStudiedTime % 60;
+
+    studiedMinutes = studiedMinutes < 10 ? '0' + studiedMinutes : studiedMinutes;
+    studiedSeconds = studiedSeconds < 10 ? '0' + studiedSeconds : studiedSeconds;
+
+    timeStudied.innerHTML = studiedMinutes + ":" + studiedSeconds;
+
+    totalStudiedTime++;
+}
+    
