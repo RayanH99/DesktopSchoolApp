@@ -31,15 +31,24 @@ label
     text-align: left;
 }
 
-.moreInfo, .deleteBtn
+.moreInfo, .moreInfo:focus, .moreInfo:hover
+{
+    background-color: transparent;
+    border-color: transparent;
+    padding: 0;
+    outline: none;
+}
+
+.deleteBtn, .editBtn, .deleteBtn:focus, .editBtn:focus
 {
     float: right;
     background-color: transparent;
     border-color: transparent;
     padding: 0;
+    outline: none;
 }
 
-.moreInfo:hover, .deleteBtn:hover
+.deleteBtn:hover, .editBtn:hover
 {
     float: right;
     background-color: transparent;
