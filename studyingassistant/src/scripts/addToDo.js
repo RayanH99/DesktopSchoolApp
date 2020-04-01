@@ -42,6 +42,8 @@ submitBtn.addEventListener("click" ,function ()
     if (desc.length > 0)
     {
         createTask(newID, desc, dateVal, timeVal);
+        //add to database
+        todoItems.push({Desc: desc, Date: dateVal, Time: timeVal, ItemID: newID});
         //clear input
         document.getElementById("newTask").value = "";
         document.getElementById("date").value = "";
@@ -101,8 +103,6 @@ function createTask(newID, desc, dateVal, timeVal)
 
     //create more info button
     var btnDrop = document.createElement("button");
-    // btnDrop.classList.add("btn");
-    // btnDrop.classList.add("btn-outline-warning");
     btnDrop.classList.add("moreInfo");
     btnDrop.setAttribute("type", "button");
     btnDrop.setAttribute("data-toggle","collapse");
@@ -137,6 +137,14 @@ function createTask(newID, desc, dateVal, timeVal)
     $("#delete"+newID).on("click", function(e) 
     {
         //search for task in list and delete
+        for (let task=0; task<todoItems.length; task++)
+        {
+            if (todoItems[task].ItemID == newID)
+            {
+                todoItems.splice(task, 1);
+            }
+        }
+        //reassign IDs
         
         //hide elements from display
         $(this).parent().fadeOut(100,function()
