@@ -15,7 +15,6 @@
         <a href="mainWindow.html" class="btn btn-outline-info return-button">Return 🔙</a>
         <div class="card">
             <div class="card-body">
-                <div id="pomodoro-timer"></div>
                 <div class="btn-group">
                     <div class="dropdown">
                         <button class="btn btn-outline-success top-buffer miscBtn dropdown-toggle dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">🚀 Select Task </button>
@@ -32,10 +31,14 @@
                         </div>
                     </div>
                 </div>
+                <div id="pomodoro-timer"></div>
+                <div id="myProgress">
+                    <div id="myBar"></div>
+                </div>
                 <br>
-                <button onclick = "startTimer()" id="startButton"class="btn btn-info top-buffer miscBtn">&#11208 Start</button>
-                <button onclick = "pauseTimer()" id="stopButton" class="btn btn-danger top-buffer miscBtn">&#10074&#10074 Pause</button>
-                <button onclick = "resetTimer()" class="btn btn-outline-warning top-buffer miscBtn">↺ Reset</button>
+                <button onclick = "startTimer()" id="startButton"class="btn btn-info miscBtn">&#11208 Start</button>
+                <button onclick = "pauseTimer()" id="stopButton" class="btn btn-danger miscBtn">&#10074&#10074 Pause</button>
+                <button onclick = "resetTimer()" class="btn btn-outline-warning miscBtn">↺ Reset</button>
                 <br>
                 <br>
                 <p>Total time studied today:</p>

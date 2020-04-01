@@ -42,6 +42,7 @@ function startTimer(){
     if(!intervalID){ // to prevent multiple setIntervals being queued up
         
         intervalID = setInterval(updateTimer, 1000);
+        move();
         if(studying == 1){
             studiedID = setInterval(updateStudiedTime, 1000);
         } else if(studying == 0){
@@ -133,4 +134,23 @@ function updateBreakTime(){
     timeOnBreak.innerHTML = breakMinutes + ":" + breakSeconds;
 
     totalBreakTime++;
+}
+
+var j = 0;
+function move() {
+  if (j == 0) {
+    j = 1;
+    var elem = document.getElementById("myBar");
+    var width = 1;
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (width >= 100) {
+        clearInterval(id);
+        j = 0;
+      } else {
+        width++;
+        elem.style.width = width + "%";
+      }
+    }
+  }
 }
