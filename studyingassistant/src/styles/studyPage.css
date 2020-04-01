@@ -5,20 +5,23 @@ p
 
 #pomodoro-timer
 {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     font-size: 60px;
 }
 
 #myProgress 
 {
     width: 100%;
-    background-color: grey;
+    border-radius: 20px;
+    background-color: #f5f5f5;
 }
   
 #myBar
 {
-    width: 1%;
-    height: 30px;
-    background-color: green;
+    width: 0%;
+    height: 20px;
+    border-radius: 20px;
+    background-color: #5cb85c;
+    margin-bottom: 20px;
 }
