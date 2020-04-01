@@ -4,6 +4,10 @@ var totalStudiedTime = 0;
 var studiedTime = totalStudiedTime * 60;
 var totalBreakTime = 0;
 var breakTime = totalBreakTime * 60;
+var width = 0;
+
+//this value is for creating 1 percent of the progress bar
+var onePercent; // multiply and divide by 10 to avoid floating point error
 
 //IDs used for setInterval for the pomodoro timer and study/break time trackers
 var intervalID; 
@@ -21,6 +25,7 @@ var startButton = document.getElementById('startButton');
 var pauseButton = document.getElementById('stopButton');
 var timeStudied = document.getElementById('timeStudied');
 var timeOnBreak = document.getElementById('timeOnBreak');
+var progressBar = document.getElementById("myBar");
 
 // call these once to stop clock from taking too long on first use of the setInterval function
 updateTimer(); 
@@ -32,9 +37,19 @@ function updateTimer(){
     let seconds = time % 60;
 
     minutes = minutes < 10 ? '0' + minutes : minutes;
-    seconds = seconds < 10 ? '0' + seconds : seconds; //if seconds less than 10, make it 00, 01, 02, etc.
+    seconds = seconds < 10 ? '0' + seconds : seconds; // if seconds less than 10, make it 00, 01, 02, etc.
 
     pomodoroTimer.innerHTML = minutes + ':'+ seconds;
+    
+    // progress bar
+    if(width <= 100){
+        if(time % onePercent == 0){
+            width++;
+            progressBar.style.width = width + "%";
+        }
+    }
+
+
     if(time != 0) time--;
 }
 
@@ -42,7 +57,6 @@ function startTimer(){
     if(!intervalID){ // to prevent multiple setIntervals being queued up
         
         intervalID = setInterval(updateTimer, 1000);
-        move();
         if(studying == 1){
             studiedID = setInterval(updateStudiedTime, 1000);
         } else if(studying == 0){
@@ -50,9 +64,9 @@ function startTimer(){
         }
 
         startButton.classList.remove("btn-outline-info"); 
-        startButton.classList.add("btn-info"); //fill box with colour
+        startButton.classList.add("btn-info"); // fill box with colour
     
-        pauseButton.classList.add("btn-outline-danger"); //remove colour from pause button
+        pauseButton.classList.add("btn-outline-danger"); // remove colour from pause button
         pauseButton.classList.remove("btn-danger");
     }
 }
@@ -63,16 +77,18 @@ function pauseTimer(){
     clearInterval(studiedID);
     studiedID = 0;
     clearInterval(breakID);
+    breakID = 0;
 
     pauseButton.classList.remove("btn-outline-danger"); 
-    pauseButton.classList.add("btn-danger"); //fill box with colour
+    pauseButton.classList.add("btn-danger"); // fill box with colour
 
-    startButton.classList.add("btn-outline-info"); //remove colour from start button
+    startButton.classList.add("btn-outline-info"); // remove colour from start button
     startButton.classList.remove("btn-info");
 }
 
 function resetTimer(){
     time = startTime * 60;
+    width = 0;
     updateTimer();
     pauseTimer();
 }
@@ -80,35 +96,43 @@ function resetTimer(){
 function setTimer(studyLength){
     startTime = studyLength;
     studying = 1;
+
+    onePercent = (startTime * 60) * 0.01;
+    width = 0;
+    
     if(studyLength == 25){
         taskMessage.innerHTML = "✍ Regular Task | 25 minutes ";
     } else {
         taskMessage.innerHTML = "📚 Extended Task | 45 minutes ";
     }
     taskMessage.classList.remove("btn-outline-success"); 
-    taskMessage.classList.add("btn-success"); //fill box with colour
+    taskMessage.classList.add("btn-success"); // fill box with colour
 
-    breakMessage.classList.add("btn-outline-info"); //remove colour from break button
+    breakMessage.classList.add("btn-outline-info"); // remove colour from break button
     breakMessage.classList.remove("btn-info");
 
-    breakMessage.innerHTML = "⏳ Break "; //reset break dropdown button text
+    breakMessage.innerHTML = "⏳ Break "; // reset break dropdown button text
     resetTimer();
 }
 
 function breakTimer(breakLength){
     startTime = breakLength;
     studying = 0;
+
+    onePercent = (startTime * 60) * 0.01;
+    width = 0;
+
     if(breakLength == 5){
         breakMessage.innerHTML = "🥪 Short Break | 5 minutes ";
     } else {
         breakMessage.innerHTML = "😴 Long Break | 15 minutes ";
     }
     breakMessage.classList.remove("btn-outline-info");
-    breakMessage.classList.add("btn-info"); //fill box with colour
+    breakMessage.classList.add("btn-info"); // fill box with colour
 
-    taskMessage.classList.add("btn-outline-success"); //remove colour from task button 
+    taskMessage.classList.add("btn-outline-success"); // remove colour from task button 
     taskMessage.classList.remove("btn-success");  
-    taskMessage.innerHTML = "🚀 Select Task "; //reset task select dropdown button text
+    taskMessage.innerHTML = "🚀 Select Task "; // reset task select dropdown button text
     resetTimer();
 }
 
@@ -134,23 +158,4 @@ function updateBreakTime(){
     timeOnBreak.innerHTML = breakMinutes + ":" + breakSeconds;
 
     totalBreakTime++;
-}
-
-var j = 0;
-function move() {
-  if (j == 0) {
-    j = 1;
-    var elem = document.getElementById("myBar");
-    var width = 1;
-    var id = setInterval(frame, 10);
-    function frame() {
-      if (width >= 100) {
-        clearInterval(id);
-        j = 0;
-      } else {
-        width++;
-        elem.style.width = width + "%";
-      }
-    }
-  }
 }
