@@ -92,7 +92,6 @@ function createTask(newID, desc, dateVal, timeVal)
     //create list item
     var newItem = document.createElement("li");
     newItem.classList.add("list-group-item");
-    newItem.innerHTML = desc;
 
     //create delete button
     var btnDelete = document.createElement("button");
@@ -100,6 +99,13 @@ function createTask(newID, desc, dateVal, timeVal)
     btnDelete.id = "delete" + newID;
     btnDelete.innerHTML = "🗑";
     newItem.appendChild(btnDelete);
+
+    //create edit button
+    var btnEdit = document.createElement("button");
+    btnEdit.classList.add("editBtn");
+    btnEdit.id = "edit" + newID;
+    btnEdit.innerHTML = "✏";
+    newItem.appendChild(btnEdit);
 
     //create more info button
     var btnDrop = document.createElement("button");
@@ -109,7 +115,7 @@ function createTask(newID, desc, dateVal, timeVal)
     btnDrop.setAttribute("data-target", "#" + newID);
     btnDrop.setAttribute("aria-expanded", "false");
     btnDrop.setAttribute("aria-controls", newID);
-    btnDrop.innerHTML = "🔻";
+    btnDrop.innerHTML = desc;
     newItem.appendChild(btnDrop);
 
     //create drop down div
@@ -153,5 +159,22 @@ function createTask(newID, desc, dateVal, timeVal)
             $(this).remove();
         });
         e.stopPropagation();
+    });
+
+    //updating a todo
+    $("#edit"+newID).on("click", function(e) 
+    {
+        //search for task in list and delete
+        for (let task=0; task<todoItems.length; task++)
+        {
+            //load values into form
+            if (todoItems[task].ItemID == newID)
+            {
+                console.log(todoItems[task]);
+                document.getElementById("newTask").value = todoItems[task].Desc;
+                document.getElementById("date").value = todoItems[task].Date;
+                document.getElementById("time").value = todoItems[task].Time;
+            }
+        }
     });
 }
