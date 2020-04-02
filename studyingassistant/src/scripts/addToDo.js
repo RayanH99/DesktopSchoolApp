@@ -86,6 +86,24 @@ function onTimeChange()
     return newTime = hours + ':' + minutes + ' ' + meridian;
 }
 
+//get the 24hour time format for editing functionality
+function twentyfourhourTime(timeVal)
+{
+    var oldTime = timeVal.split(':');
+    var oldHour = oldTime[0];
+    var oldMin = oldTime[1].slice(0,2);
+    var newHour;
+    if (timeVal.slice(-2) == "PM")
+    {
+        newHour = parseInt(oldHour) + 12;
+    }
+    else
+    {
+        newHour = oldHour;
+    }
+    return newHour + ':' + oldMin;
+}
+
 //construct html card
 function createTask(newID, desc, dateVal, timeVal)
 {
@@ -173,7 +191,7 @@ function createTask(newID, desc, dateVal, timeVal)
                 console.log(todoItems[task]);
                 document.getElementById("newTask").value = todoItems[task].Desc;
                 document.getElementById("date").value = todoItems[task].Date;
-                document.getElementById("time").value = todoItems[task].Time;
+                document.getElementById("time").value = twentyfourhourTime(todoItems[task].Time);
             }
         }
     });
