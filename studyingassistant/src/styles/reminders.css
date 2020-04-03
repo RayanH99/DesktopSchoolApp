@@ -39,13 +39,25 @@ label
     outline: none;
 }
 
-.deleteBtn, .editBtn, .deleteBtn:focus, .editBtn:focus
+.deleteBtn, .deleteBtn:focus
 {
     float: right;
     background-color: transparent;
     border-color: transparent;
     padding: 0;
     outline: none;
+    transition: transform .2s;
+}
+
+.editBtn, .editBtn:focus
+{
+    float: right;
+    background-color: transparent;
+    border-color: transparent;
+    padding: 0;
+    outline: none;
+    margin-right: 10px;
+    transition: transform .2s;
 }
 
 .deleteBtn:hover, .editBtn:hover
@@ -54,6 +66,7 @@ label
     background-color: transparent;
     border-color: transparent;
     padding: 0;
+    transform: scale(1.2);
 }
 
 .hidden
