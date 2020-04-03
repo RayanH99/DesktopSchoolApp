@@ -7,7 +7,8 @@ var breakTime = totalBreakTime * 60;
 var width = 0;
 
 //this value is for creating 1 percent of the progress bar
-var onePercent; // multiply and divide by 10 to avoid floating point error
+// multiply and divide by 10 to avoid floating point error (check April 2, 2020 NOTE in google doc for more info)
+var onePercent; 
 
 //IDs used for setInterval for the pomodoro timer and study/break time trackers
 var intervalID; 
@@ -46,6 +47,13 @@ function updateTimer(){
         if(time % onePercent == 0){
             width++;
             progressBar.style.width = width + "%";
+        } 
+        
+        if(width == 100){
+            clearInterval(studiedID);
+            studiedID = 0;
+            clearInterval(breakID);
+            breakID = 0;
         }
     }
 
