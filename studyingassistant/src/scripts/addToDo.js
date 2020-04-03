@@ -1,32 +1,42 @@
-var todoItems = [
-    Task1 = {
+var todoItems = {
+    Task1: {
         Desc: "Task 1",
         Date: "2020-03-28",
         Time: "06:53 PM",
         ItemID: "newItem1"
     },
-    Task2 = {
+    Task2: {
         Desc: "Task 2",
         Date: "2020-03-29",
         Time: "07:02 AM",
         ItemID: "newItem2"
     }
-];
+};
 
 var submitBtn = document.getElementById("submitBtn");
 var todoList = document.getElementById("todolist");
 
-var numItems = todoItems.length;
+var numItems = Object.keys(todoItems).length;
 var newTime = "";
 var inputEle = document.getElementById('time');
 
 //load tasks
-for (let task = 0; task < todoItems.length; task++)
+// for (let task = 0; task < todoItems.length; task++)
+// {
+//     var newID = todoItems[task].ItemID; 
+//     var desc = todoItems[task].Desc; 
+//     var dateVal = todoItems[task].Date; 
+//     var timeVal = todoItems[task].Time; 
+//     createTask(newID, desc, dateVal, timeVal);
+// }
+
+for (const task in todoItems)
 {
     var newID = todoItems[task].ItemID; 
     var desc = todoItems[task].Desc; 
     var dateVal = todoItems[task].Date; 
     var timeVal = todoItems[task].Time; 
+    console.log(newID, desc, dateVal, timeVal);
     createTask(newID, desc, dateVal, timeVal);
 }
 
@@ -43,7 +53,7 @@ submitBtn.addEventListener("click" ,function ()
     {
         createTask(newID, desc, dateVal, timeVal);
         //add to database
-        todoItems.push({Desc: desc, Date: dateVal, Time: timeVal, ItemID: newID});
+        todoItems['Task'+numItems] = {Desc: desc, Date: dateVal, Time: timeVal, ItemID: newID};
         //clear input
         document.getElementById("newTask").value = "";
         document.getElementById("date").value = "";
@@ -161,11 +171,12 @@ function createTask(newID, desc, dateVal, timeVal)
     $("#delete"+newID).on("click", function(e) 
     {
         //search for task in list and delete
-        for (let task=0; task<todoItems.length; task++)
+        for (const task in todoItems)
         {
             if (todoItems[task].ItemID == newID)
             {
-                todoItems.splice(task, 1);
+                //todoItems.splice(task, 1);
+                delete todoItems.task;
             }
         }
         //reassign IDs
@@ -183,7 +194,7 @@ function createTask(newID, desc, dateVal, timeVal)
     $("#edit"+newID).on("click", function(e) 
     {
         //search for task in list and delete
-        for (let task=0; task<todoItems.length; task++)
+        for (const task in todoItems)
         {
             //load values into form
             if (todoItems[task].ItemID == newID)
