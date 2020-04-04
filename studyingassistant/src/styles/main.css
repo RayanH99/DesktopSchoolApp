@@ -60,12 +60,9 @@ body
     background-color: white;
 }
 
-.btn-outline-warning:hover{
+.btn-warning, .btn-outline-warning:hover
+{
     color: white !important;
-}
-
-.btn-warning{
-    color: white !important; 
 }
 
 .hoverEffect

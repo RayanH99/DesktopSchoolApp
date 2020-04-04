@@ -26,26 +26,24 @@ p
     margin-bottom: 20px;
 }
 
-.timerAlarm
+.timerAlarm, .timerAlarm:focus
 {
     position: absolute;
     top: 30px;
     right: 65px;
+    transition: transform .2s;
 }
 
-.timerAlarm:hover
-{
-    text-decoration: none !important;
-}
-
-.timerNotification
+.timerNotification, .timerNotification:focus
 {
     position: absolute;
     top: 30px;
     right: 30px; 
+    transition: transform .2s;
 }
 
-.timerNotification:hover
+.timerAlarm:hover, .timerNotification:hover
 {
     text-decoration: none !important;
+    transform: scale(1.2);
 }
