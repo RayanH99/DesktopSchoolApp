@@ -57,7 +57,6 @@ function updateTimer(){
         }
     }
 
-
     if(time != 0) time--;
 }
 
@@ -166,4 +165,14 @@ function updateBreakTime(){
     timeOnBreak.innerHTML = breakMinutes + ":" + breakSeconds;
 
     totalBreakTime++;
+}
+
+function toggleAlert(alertType){
+    if(alertType == 1){
+        var alarmButton = document.getElementById('alarmButton');
+        alarmButton.innerHTML = (alarmButton.innerHTML == "🔊") ? "🔇" : "🔊";
+    } else {
+        var notificationButton = document.getElementById('notificationButton');
+        notificationButton.innerHTML = (notificationButton.innerHTML == "🔔") ? "🔕" : "🔔";
+    }
 }

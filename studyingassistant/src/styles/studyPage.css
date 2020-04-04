@@ -25,3 +25,27 @@ p
     background-color: #5cb85c;
     margin-bottom: 20px;
 }
+
+.timerAlarm
+{
+    position: absolute;
+    top: 30px;
+    right: 65px;
+}
+
+.timerAlarm:hover
+{
+    text-decoration: none !important;
+}
+
+.timerNotification
+{
+    position: absolute;
+    top: 30px;
+    right: 30px; 
+}
+
+.timerNotification:hover
+{
+    text-decoration: none !important;
+}
