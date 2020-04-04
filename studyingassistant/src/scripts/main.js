@@ -21,7 +21,36 @@ app.on('ready', function(){
     //build menu from template
     //const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
     //Menu.setApplicationMenu(mainMenu);
+
+    //below code is for refocusing the window after an alert is given by the app
+    const isWindows = process.platform === 'win32';
+    let needsFocusFix = false;
+    let triggeringProgrammaticBlur = false;
+
+    mainWindow.on('blur', (event) => {
+        if(!triggeringProgrammaticBlur) 
+        {
+            needsFocusFix = true;
+        }
+    })
+
+    mainWindow.on('focus', (event) => {
+        if(isWindows && needsFocusFix) 
+        {
+            needsFocusFix = false;
+            triggeringProgrammaticBlur = true;
+            setTimeout(function () {
+                mainWindow.blur();
+                mainWindow.focus();
+                setTimeout(function () {
+                triggeringProgrammaticBlur = false;
+                }, 100);
+            }, 100);
+        }
+    });
 });
+
+
 
 //creating menu template
 const mainMenuTemplate = [

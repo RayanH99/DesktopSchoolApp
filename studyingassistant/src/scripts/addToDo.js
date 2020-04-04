@@ -20,16 +20,6 @@ var numItems = Object.keys(todoItems).length;
 var newTime = "";
 var inputEle = document.getElementById('time');
 
-//load tasks
-// for (let task = 0; task < todoItems.length; task++)
-// {
-//     var newID = todoItems[task].ItemID; 
-//     var desc = todoItems[task].Desc; 
-//     var dateVal = todoItems[task].Date; 
-//     var timeVal = todoItems[task].Time; 
-//     createTask(newID, desc, dateVal, timeVal);
-// }
-
 for (const task in todoItems)
 {
     var newID = todoItems[task].ItemID; 
@@ -61,8 +51,7 @@ submitBtn.addEventListener("click" ,function ()
     }
     else
     {
-        //**********app seems to stop working correctly here**********
-        alert("Please fill out all required fields.");
+        alert("Please enter all required fields.");
     }
 });
 
