@@ -39,7 +39,8 @@ submitBtn.addEventListener("click" ,function ()
     var dateVal = document.getElementById("date").value;
     var timeVal = onTimeChange();
 
-    if (desc.length > 0)
+    //validate information for submission
+    if (desc.length > 0 && dateVal.length > 8 && !(timeVal.includes('undefined')))
     {
         createTask(newID, desc, dateVal, timeVal);
         //add to database
@@ -48,10 +49,15 @@ submitBtn.addEventListener("click" ,function ()
         document.getElementById("newTask").value = "";
         document.getElementById("date").value = "";
         document.getElementById("time").value = "";
+        //show success msg
+        document.getElementById("successMsg").classList.remove("hidden");
+        document.getElementById("errorMsg").classList.add("hidden");
     }
     else
     {
-        alert("Please enter all required fields.");
+        //show error msg
+        document.getElementById("errorMsg").classList.remove("hidden");
+        document.getElementById("successMsg").classList.add("hidden");
     }
 });
 
