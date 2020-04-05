@@ -175,13 +175,11 @@ function createTask(newID, desc, dateVal, timeVal)
             }
         }
         //reassign IDs
-        
-        //hide elements from display
-        $(this).parent().fadeOut(100,function()
-        {
-            $("#"+newID).remove();
-            $(this).remove();
-        });
+
+        //remove elements
+        $(this).parent().remove();
+        $("#"+newID).remove();
+        $(this).remove();
         e.stopPropagation();
     });
 

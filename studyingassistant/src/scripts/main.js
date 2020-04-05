@@ -2,14 +2,25 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 
-const {app, BrowserWindow, Menu} = electron;
+const {app, BrowserWindow, Menu, Notification} = electron;
 
 let mainWindow;
 
+function callNotification(){
+    const notif={
+          title: 'Headline',
+          body: 'Here write your message'
+        };
+    return new Notification(notif).show();
+}
+
 // Listen for app to be ready
 app.on('ready', function(){
+
+    callNotification();
+
     // Create new window
-    mainWindow = new BrowserWindow({width:800, height:640});
+    mainWindow = new BrowserWindow({width:800, height:640, webPreferences: {nodeIntegration: true}});
     // Load html into window
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, '../pages/mainWindow.html'),
@@ -49,7 +60,6 @@ app.on('ready', function(){
         }
     });
 });
-
 
 
 //creating menu template
