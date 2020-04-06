@@ -38,11 +38,6 @@ body
     width: 100%;
 }
 
-.card-body
-{
-    background-color: #f9f9f9;
-}
-
 .top-buffer
 {
     margin-top: 20px;
