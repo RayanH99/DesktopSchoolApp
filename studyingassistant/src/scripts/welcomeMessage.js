@@ -14,6 +14,33 @@ else if (hrs >= 17 && hrs <= 24)
 
 welcomeMsg.innerHTML = greet + ', Corona! 👋';
 
+var wordBtn = document.getElementById("wordBtn");
+var sheetsBtn = document.getElementById("sheetsBtn");
+var pptBtn = document.getElementById("pptBtn");
+var portalBtn = document.getElementById("portalBtn");
+
+
+wordBtn.addEventListener('click', function()
+{
+    require("electron").shell.openExternal('https://docs.google.com/');
+});
+
+sheetsBtn.addEventListener('click', function()
+{
+    require("electron").shell.openExternal('https://docs.google.com/spreadsheets/u/0/');
+});
+
+pptBtn.addEventListener('click', function()
+{
+    require("electron").shell.openExternal('https://docs.google.com/presentation/u/0/');
+});
+
+portalBtn.addEventListener('click', function()
+{
+    require("electron").shell.openExternal('https://cap.mcmaster.ca/mcauth/login.jsp?app_id=1505&app_name=Avenue');
+});
+
+
 var logoutBtn = document.getElementById("logoutBtn");
 
 logoutBtn.addEventListener('click', function()

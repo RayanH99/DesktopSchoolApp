@@ -93,3 +93,9 @@ body
     border-style: solid;
     border-color: black transparent transparent transparent;
 }
+
+.fixed-bottom
+{
+    height: 90px;
+    background-color: #484848;
+}
