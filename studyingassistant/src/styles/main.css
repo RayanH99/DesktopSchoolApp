@@ -38,6 +38,11 @@ body
     width: 100%;
 }
 
+.card-body
+{
+    background-color: #f9f9f9;
+}
+
 .top-buffer
 {
     margin-top: 20px;
@@ -92,4 +97,10 @@ body
     border-width: 5px;
     border-style: solid;
     border-color: black transparent transparent transparent;
+}
+
+.fixed-bottom
+{
+    height: 90px;
+    background-color: #484848;
 }
