@@ -6,7 +6,7 @@ h1, h3, p
 html
 {
     height: 100%;
-    background: linear-gradient(180deg, #4776E6 0%, #f5f5f5 100%);
+    background-color: #f5f5f5;
 }
 
 body
@@ -22,7 +22,9 @@ a span {
     vertical-align: top;
     white-space: nowrap;
     overflow: hidden;    
-    color: white;
+    color: black;
+    margin-top: 15px;
+    margin-left: 10px;
 }
 
 a:hover span {
@@ -82,12 +84,13 @@ a:hover span {
 .hoverEffect
 {
     transition: transform .2s;
+    box-shadow: 2px 2px 2px #2323234f;
 }
 
 .hoverEffect:hover 
 {
     transform: scale(1.05);
-    box-shadow: 1px 1px 3px #a0a0a077;
+    box-shadow: 2px 2px 2px #2323234f;
 }
 
 .tooltip 
@@ -110,7 +113,24 @@ a:hover span {
 
 .fixed-bottom
 {
-    height: 12%;
-    background-color: rgb(46, 88, 185);
+    height: 100px;
+    background-color: #f5f5f5;
     color: white;
+}
+
+.backdrop-gradient
+{
+    z-index: -1;
+    position: absolute;
+    margin-top: -30px;
+    height: 420px;
+    width: 100%;
+    background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(103,144,245,1) 0%, rgba(146,101,234,1) 62%, rgba(194,84,233,1) 100%);
+    border-bottom-left-radius: 20%;
+    border-bottom-right-radius: 20%;
+}
+
+.card
+{
+    margin-top: 20px;
 }

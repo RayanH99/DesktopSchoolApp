@@ -12,16 +12,17 @@
     <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
 </head>
 <body>
+    <div class="backdrop-gradient"></div>
     <div class="container">
-        <h1 id="heading"></h1>
-        <p>What would you like to do?</p>
+        <h1 id="heading" style="color: white;"></h1>
+        <p style="color: white;">What would you like to do?</p>
         <div class="row">
             <div class="col-sm-6">
                 <div class="card hoverEffect">
                 <div class="card-body">
                     <h5 class="card-title">Manage Reminders 📝</h5>
                     <p class="card-text">Add, remove, and edit reminders.</p>
-                    <a href="remindersPage.html" class="btn btn-outline-primary cardBtn stretched-link">Go</a>
+                    <a href="remindersPage.html" class="btn btn-warning cardBtn stretched-link">Go</a>
                 </div>
                 </div>
             </div>
@@ -30,7 +31,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Study Playlist 🎧</h5>
                     <p class="card-text">View, play, and edit study music.</p>
-                    <a href="#" class="btn btn-outline-primary cardBtn stretched-link">Go</a>
+                    <a href="#" class="btn btn-warning cardBtn stretched-link">Go</a>
                 </div>
                 </div>
             </div>
@@ -39,7 +40,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Begin Studying ⏰</h5>
                     <p class="card-text">Start a timed study session.</p>
-                    <a href="../pages/studyPage.html" class="btn btn-outline-primary cardBtn stretched-link">Go</a>
+                    <a href="../pages/studyPage.html" class="btn btn-warning cardBtn stretched-link">Go</a>
                 </div>
                 </div>
             </div>
@@ -48,7 +49,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Analytics 📈</h5>
                     <p class="card-text">Monitor and track study habits.</p>
-                    <a href="#" class="btn btn-outline-primary cardBtn stretched-link">Go</a>
+                    <a href="#" class="btn btn-warning cardBtn stretched-link">Go</a>
                 </div>
                 </div>
             </div>
@@ -57,27 +58,27 @@
 
     <nav class="navbar fixed-bottom">
         <a href="#" class="btn miscBtn">
-            ⚙
+            <img src="../public/icons/settings.png" style="width: 50px; margin-right:0;">
             <span>Settings</span>
         </a>
         <a class="btn miscBtn" id="wordBtn">
-            📄
+            <img src="../public/icons/docs.png" style="width: 30px;">
             <span>Docs</span>
         </a>
         <a class="btn miscBtn" id="sheetsBtn">
-            📊
+            <img src="../public/icons/sheets.png" style="width: 30px;">
             <span>Sheets</span>
         </a>
         <a class="btn miscBtn" id="pptBtn">
-            🗂
+            <img src="../public/icons/slides.png" style="width: 30px;">
             <span>Slides</span>
         </a>
         <a class="btn miscBtn" id="portalBtn">
-            🌐
+            <img src="../public/icons/portal.png" style="width: 40px; margin-right:0;">
             <span>Portal</span>
         </a>
         <a href="../pages/loginPage.html" id="logoutBtn" class="btn miscBtn">
-            📴
+            <img src="../public/icons/logoff.png" style="width: 40px; margin-right:0;">
             <span>Logout</span>
         </a>
     </nav>
