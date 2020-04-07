@@ -56,7 +56,7 @@ a:hover span {
 
 .top-buffer
 {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 .miscBtn
@@ -126,11 +126,6 @@ a:hover span {
     height: 420px;
     width: 100%;
     background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(103,144,245,1) 0%, rgba(146,101,234,1) 62%, rgba(194,84,233,1) 100%);
-    border-bottom-left-radius: 20%;
-    border-bottom-right-radius: 20%;
-}
-
-.card
-{
-    margin-top: 20px;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
 }
