@@ -1,4 +1,9 @@
 require('../scripts/dbConnection');
+var user = firebase.auth().currentUser;
+console.log(user);
+var currUser = user.email;
+
+var username = db.collection("users").doc(currUser);
 
 var myDate = new Date();
 var hrs = myDate.getHours();
@@ -12,7 +17,17 @@ else if (hrs >= 12 && hrs <= 17)
 else if (hrs >= 17 && hrs <= 24)
     greet = 'Good Evening';
 
-welcomeMsg.innerHTML = greet + ', Corona! 👋';
+username.get().then(function(doc) {
+    if (doc.exists) {
+        welcomeMsg.innerHTML = greet + ', Corona! 👋';
+        console.log("Document data:", doc.data().name);
+    } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+    }
+}).catch(function(error) {
+    console.log("Error getting document:", error);
+});
 
 var wordBtn = document.getElementById("wordBtn");
 var sheetsBtn = document.getElementById("sheetsBtn");
