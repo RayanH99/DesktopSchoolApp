@@ -2,7 +2,7 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 
-const {app, BrowserWindow, Menu, Notification} = electron;
+const {app, BrowserWindow, Menu, Notification, ipcMain} = electron;
 
 let mainWindow;
 
@@ -14,11 +14,24 @@ function callNotification(){
     return new Notification(notif).show();
 }
 
+var currUser = new Object();
+
+//receives login info from user after login
+ipcMain.on('sendUserInfo', (event, user) =>
+{
+    currUser.accountHolder = user;
+    currUser.currName = user.email;
+    console.log(currUser);
+});
+
+//sends back user info after reaching the welcome page
+ipcMain.handle('getUser', (event) => 
+{
+    return currUser;
+});
+
 // Listen for app to be ready
 app.on('ready', function(){
-
-    callNotification();
-
     // Create new window
     mainWindow = new BrowserWindow({width:800, height:640, webPreferences: {nodeIntegration: true}});
     // Load html into window

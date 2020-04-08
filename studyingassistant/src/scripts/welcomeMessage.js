@@ -1,9 +1,33 @@
 require('../scripts/dbConnection');
-var user = firebase.auth().currentUser;
-console.log(user);
-var currUser = user.email;
+var db = firebase.firestore();
+var emailVal = "";
 
-var username = db.collection("users").doc(currUser);
+const {ipcRenderer} = require('electron');
+
+//request user info from backend
+ipcRenderer.invoke('getUser')
+.then((result) => 
+{
+    emailVal = result.currName;
+    //search for username via email address from the firebase cloud storage
+    var username = db.collection("users").doc(emailVal);
+    username.get().then(function(doc) 
+    {
+        if (doc.exists) 
+        {
+            welcomeMsg.innerHTML = greet + ', ' +doc.data().name+ ' 👋';
+            console.log("Document data:", doc.data().name);
+        } 
+        else 
+        {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }).catch(function(error) 
+    {
+        console.log("Error getting document:", error);
+    });
+});
 
 var myDate = new Date();
 var hrs = myDate.getHours();
@@ -17,24 +41,13 @@ else if (hrs >= 12 && hrs <= 17)
 else if (hrs >= 17 && hrs <= 24)
     greet = 'Good Evening';
 
-username.get().then(function(doc) {
-    if (doc.exists) {
-        welcomeMsg.innerHTML = greet + ', Corona! 👋';
-        console.log("Document data:", doc.data().name);
-    } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-    }
-}).catch(function(error) {
-    console.log("Error getting document:", error);
-});
-
 var wordBtn = document.getElementById("wordBtn");
 var sheetsBtn = document.getElementById("sheetsBtn");
 var pptBtn = document.getElementById("pptBtn");
 var portalBtn = document.getElementById("portalBtn");
 
 
+//bottom docker shortcuts
 wordBtn.addEventListener('click', function()
 {
     require("electron").shell.openExternal('https://docs.google.com/');
@@ -55,7 +68,7 @@ portalBtn.addEventListener('click', function()
     require("electron").shell.openExternal('https://cap.mcmaster.ca/mcauth/login.jsp?app_id=1505&app_name=Avenue');
 });
 
-
+//logout functionality ********need to clear info from backend storage as well so no info is saved
 var logoutBtn = document.getElementById("logoutBtn");
 
 logoutBtn.addEventListener('click', function()
