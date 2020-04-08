@@ -23,7 +23,7 @@ app.on('ready', function(){
     mainWindow = new BrowserWindow({width:800, height:640, webPreferences: {nodeIntegration: true}});
     // Load html into window
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, '../pages/mainWindow.html'),
+        pathname: path.join(__dirname, '../pages/loginPage.html'),
         protocol: 'file:', 
         slashes: true
     }));
