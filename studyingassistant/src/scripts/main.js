@@ -30,6 +30,13 @@ ipcMain.handle('getUser', (event) =>
     return currUser;
 });
 
+ipcMain.handle('logoutUser', (event)=>
+{
+    //clear info
+    currUser = new Object();
+    console.log(currUser);
+});
+
 // Listen for app to be ready
 app.on('ready', function(){
     // Create new window

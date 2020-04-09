@@ -11,19 +11,15 @@ ipcRenderer.invoke('getUser')
     emailVal = result.currName;
     //search for username via email address from the firebase cloud storage
     var username = db.collection("users").doc(emailVal);
-    username.get().then(function(doc) 
+    username.get()
+    .then(function(doc) 
     {
         if (doc.exists) 
-        {
             welcomeMsg.innerHTML = greet + ', ' +doc.data().name+ ' 👋';
-            console.log("Document data:", doc.data().name);
-        } 
-        else 
-        {
-            // doc.data() will be undefined in this case
+        else
             console.log("No such document!");
-        }
-    }).catch(function(error) 
+    })
+    .catch(function(error) 
     {
         console.log("Error getting document:", error);
     });
@@ -73,6 +69,7 @@ var logoutBtn = document.getElementById("logoutBtn");
 
 logoutBtn.addEventListener('click', function()
 {
+    ipcRenderer.invoke('logoutUser');
     firebase.auth().signOut()
     .then(function() 
     {

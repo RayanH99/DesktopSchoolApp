@@ -7,15 +7,17 @@ const notifier = require('node-notifier');
 const path = require('path'); //going to use this to replace the icon later
 
 var loginBtn = document.getElementById("submitBtn");
+var loadingIcon = document.getElementById("loadingIcon");
 
 loginBtn.addEventListener('click', function()
 {
-    console.log("clicked");
+    loadingIcon.classList.remove("hidden");
     var emailField = document.getElementById("inputEmail3").value;
     var passField = document.getElementById("inputPassword3").value;
 
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-    .then(function(){
+    .then(function()
+    {
         return firebase.auth().signInWithEmailAndPassword(emailField, passField)
         .then(function()
         {
@@ -28,6 +30,7 @@ loginBtn.addEventListener('click', function()
         })
         .catch(function(error) 
         {
+            loadingIcon.classList.add("hidden");
             if(error)
             {
                 notifier.notify(
@@ -47,6 +50,7 @@ loginBtn.addEventListener('click', function()
     })
     .catch(function(error)
     {
+        loadingIcon.classList.add("hidden");
         console.log(error);
     });
 });
