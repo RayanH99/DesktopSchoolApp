@@ -14,6 +14,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
 </head>
 <body>
+    <div class="loadingBuffer"></div>
     <div class="container loginPage">
         <h1 id="heading">The Study App</h1>
         <div class="card loginForm">
@@ -26,7 +27,7 @@
                     <div class="form-group row">
                         <input type="password" class="form-control txtField" id="inputPassword3" placeholder="🔑 Password">
                     </div>
-                    <a href="#" id="submitBtn" class="btn btn-outline-primary loginBtn">Submit</a>
+                    <a href="#" id="submitBtn" class="btn btn-primary loginBtn">Submit<img class="hidden" src="../public/icons/oval.svg" id="loadingIcon"/></a>
                     <!--for spacing-->
                     <br></br>
                 </form>
