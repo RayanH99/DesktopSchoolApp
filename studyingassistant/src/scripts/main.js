@@ -6,15 +6,6 @@ const {app, BrowserWindow, Menu, Notification, ipcMain} = electron;
 
 let mainWindow;
 
-function callNotification()
-{
-    const notif = {
-        title: 'Headline',
-        body: 'Here write your message'
-    };
-    return new Notification(notif).show();
-}
-
 var currUser = new Object();
 
 //receives login info from user after login
@@ -59,23 +50,27 @@ app.on('ready', function(){
     let needsFocusFix = false;
     let triggeringProgrammaticBlur = false;
 
-    mainWindow.on('blur', (event) => {
+    mainWindow.on('blur', (event) => 
+    {
         if(!triggeringProgrammaticBlur) 
         {
             needsFocusFix = true;
         }
     })
 
-    mainWindow.on('focus', (event) => {
+    mainWindow.on('focus', (event) => 
+    {
         if(isWindows && needsFocusFix) 
         {
             needsFocusFix = false;
             triggeringProgrammaticBlur = true;
-            setTimeout(function () {
+            setTimeout(function () 
+            {
                 mainWindow.blur();
                 mainWindow.focus();
-                setTimeout(function () {
-                triggeringProgrammaticBlur = false;
+                setTimeout(function () 
+                {
+                    triggeringProgrammaticBlur = false;
                 }, 100);
             }, 100);
         }
