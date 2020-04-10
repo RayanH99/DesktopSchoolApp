@@ -6,11 +6,12 @@ const {app, BrowserWindow, Menu, Notification, ipcMain} = electron;
 
 let mainWindow;
 
-function callNotification(){
-    const notif={
-          title: 'Headline',
-          body: 'Here write your message'
-        };
+function callNotification()
+{
+    const notif = {
+        title: 'Headline',
+        body: 'Here write your message'
+    };
     return new Notification(notif).show();
 }
 
