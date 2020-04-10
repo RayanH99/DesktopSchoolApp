@@ -22,7 +22,6 @@ ipcRenderer.invoke('getUser')
 
             var numItems = Object.keys(todoItems).length;
             var newTime = "";
-            console.log(numItems);
             var inputEle = document.getElementById('time');
 
             for (const task in todoItems)
@@ -30,8 +29,7 @@ ipcRenderer.invoke('getUser')
                 var newID = todoItems[task].ItemID; 
                 var desc = todoItems[task].Desc; 
                 var dateVal = todoItems[task].Date; 
-                var timeVal = todoItems[task].Time; 
-                console.log(newID, desc, dateVal, timeVal);
+                var timeVal = todoItems[task].Time;
                 createTask(newID, desc, dateVal, timeVal);
             }
 
@@ -50,6 +48,17 @@ ipcRenderer.invoke('getUser')
                     createTask(newID, desc, dateVal, timeVal);
                     //add to database
                     todoItems['Task'+numItems] = {Desc: desc, Date: dateVal, Time: timeVal, ItemID: newID};
+                    db.collection("users").doc(emailVal).set({
+                        name: doc.data().name,
+                        remindersList: todoItems
+                    })
+                    .then(function() {
+                        console.log("Document successfully written!");
+                        console.log(todoItems);
+                    })
+                    .catch(function(error) {
+                        console.error("Error writing document: ", error);
+                    });
                     //clear input
                     document.getElementById("newTask").value = "";
                     document.getElementById("date").value = "";
@@ -169,18 +178,30 @@ ipcRenderer.invoke('getUser')
                 //deleting a todo
                 $("#delete"+newID).on("click", function(e) 
                 {
-                    //search for task in list and delete
+                    //search for task in list and delete locally
                     for (const task in todoItems)
                     {
                         if (todoItems[task].ItemID == newID)
                         {
                             //todoItems.splice(task, 1);
-                            delete todoItems.task;
+                            delete todoItems[task];
                         }
                     }
-                    //reassign IDs
 
-                    //remove elements
+                    //remove from database
+                    db.collection("users").doc(emailVal).set({
+                        name: doc.data().name,
+                        remindersList: todoItems
+                    })
+                    .then(function() {
+                        console.log("Document successfully written!");
+                        console.log(todoItems);
+                    })
+                    .catch(function(error) {
+                        console.error("Error writing document: ", error);
+                    });
+
+                    //remove from UI
                     $(this).parent().remove();
                     $("#"+newID).remove();
                     $(this).remove();
