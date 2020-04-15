@@ -54,7 +54,6 @@ ipcRenderer.invoke('getUser')
                     })
                     .then(function() {
                         console.log("Document successfully written!");
-                        console.log(todoItems);
                     })
                     .catch(function(error) {
                         console.error("Error writing document: ", error);
@@ -195,7 +194,6 @@ ipcRenderer.invoke('getUser')
                     })
                     .then(function() {
                         console.log("Document successfully written!");
-                        console.log(todoItems);
                     })
                     .catch(function(error) {
                         console.error("Error writing document: ", error);
@@ -217,7 +215,6 @@ ipcRenderer.invoke('getUser')
                         //load values into form
                         if (todoItems[task].ItemID == newID)
                         {
-                            console.log(todoItems[task]);
                             document.getElementById("newTask").value = todoItems[task].Desc;
                             document.getElementById("date").value = todoItems[task].Date;
                             document.getElementById("time").value = twentyfourhourTime(todoItems[task].Time);
