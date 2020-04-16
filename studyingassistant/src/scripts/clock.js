@@ -1,12 +1,24 @@
 //local date and time script
 const notifier = require('node-notifier'); //notifications
+var notifs = []; //store all reminder notifications in here
 
-reminderDate = '2020-04-14';
-reminderTime = twentyfourhourTime('11:53 PM');
-reminderNotif = reminderDate + ' ' + reminderTime;
+//connect to DB
 
-//get the 24hour time format for editing functionality
-function twentyfourhourTime(timeVal)
+//pull reminders hashtable
+
+//loop through hashtable and apply getAlarm() to each
+
+//create notif from reminder DB
+function getAlarm(date, time, desc)
+{
+    reminderDate = date;
+    reminderTime = convertTime(time);
+    reminderNotif = reminderDate + ' ' + reminderTime;
+    notifs.push([reminderNotif, desc]);
+}
+
+//get the 24hour time format for comparing with local time
+function convertTime(timeVal)
 {
     var oldTime = timeVal.split(':');
     var oldHour = oldTime[0];
@@ -20,19 +32,19 @@ function twentyfourhourTime(timeVal)
     {
         newHour = oldHour;
     }
-    return newHour + ':' + oldMin;
+    return newHour + ':' + oldMin + ':00';
 }
 
 function display_c()
 {
-    var refresh=1000; // Refresh rate in milli seconds
-    mytime=setTimeout('display_clock()',refresh)
+    var refresh = 1000; //refresh every second
+    mytime = setTimeout('display_clock()',refresh)
 }
     
 function display_clock() 
 {
     var x = new Date();
-    // date part ///
+    //format date part
     var month=x.getMonth()+1;
     var day=x.getDate();
     var year=x.getFullYear();
@@ -40,29 +52,35 @@ function display_clock()
     if (day <10 ){day='0' + day;}
     var x3= year+'-'+month+'-'+day;
 
-    // time part //
+    //format time part
     var hour=x.getHours();
     var minute=x.getMinutes();
+    var second=x.getSeconds();
     if(hour <10 ){hour='0'+hour;}
     if(minute <10 ) {minute='0' + minute; }
-    var x3 = x3 + ' ' +  hour+':'+minute;
+    if(second<10){second='0' + second;}
+    var x3 = x3 + ' ' +  hour+':'+minute+':'+second
+
     document.getElementById('clock').innerHTML = x3;
 
-    if (x3 == reminderNotif)
+    for (reminder in notifs)
     {
-        notifier.notify(
+        if (x3 == reminder)
+        {
+            notifier.notify(
             {
-              title: 'The Study App',
-              message: 'ALARMMMMMM',
-              // icon: path.join(__dirname, 'coulson.jpg'),
-              sound: true, // Only Notification Center or Windows Toasters
-              wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait
+                title: 'The Study App',
+                message: reminder[1], //extract message from reminder
+                //icon: path.join(__dirname, 'coulson.jpg'),
+                sound: true,
+                wait: true
             },
-            function(err, response) {
-              // Response is response from notification
-            }
-        );
+            function(err, response) 
+            {
+                console.log(err); //Response is response from notification
+            });
+        }
     }
 
-    display_c();
+    display_c(); //refresh clock
 }
