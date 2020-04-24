@@ -20,7 +20,7 @@ ipcRenderer.invoke('getUser')
             var submitBtn = document.getElementById("submitBtn");
             var todoList = document.getElementById("todolist");
 
-            var numItems = Object.keys(todoItems).length;
+            var numItems = doc.data().reminders;
             var newTime = "";
             var inputEle = document.getElementById('time');
 
@@ -50,7 +50,8 @@ ipcRenderer.invoke('getUser')
                     todoItems['Task'+numItems] = {Desc: desc, Date: dateVal, Time: timeVal, ItemID: newID};
                     db.collection("users").doc(emailVal).set({
                         name: doc.data().name,
-                        remindersList: todoItems
+                        remindersList: todoItems,
+                        reminders: numItems
                     })
                     .then(function() {
                         console.log("Document successfully written!");
@@ -85,10 +86,10 @@ ipcRenderer.invoke('getUser')
                     minutes = timeSplit[1];
                 if (hours > 12) 
                 {
-                meridian = 'PM';
-                hours -= 12;
+                    meridian = 'PM';
+                    hours -= 12;
                 } 
-                else if (hours < 12) 
+                else if (hours < 12)
                 {
                     meridian = 'AM';
                     if (hours == 0) 
@@ -116,7 +117,11 @@ ipcRenderer.invoke('getUser')
                 }
                 else
                 {
+                    if (oldHour == '12'){
+                        newHour = '00';
+                    } else {
                     newHour = oldHour;
+                    }
                 }
                 return newHour + ':' + oldMin;
             }
@@ -190,7 +195,8 @@ ipcRenderer.invoke('getUser')
                     //remove from database
                     db.collection("users").doc(emailVal).set({
                         name: doc.data().name,
-                        remindersList: todoItems
+                        remindersList: todoItems,
+                        reminders: numItems
                     })
                     .then(function() {
                         console.log("Document successfully written!");
@@ -218,8 +224,27 @@ ipcRenderer.invoke('getUser')
                             document.getElementById("newTask").value = todoItems[task].Desc;
                             document.getElementById("date").value = todoItems[task].Date;
                             document.getElementById("time").value = twentyfourhourTime(todoItems[task].Time);
+                            delete todoItems[task];
                         }
                     }
+                    //remove from database
+                    db.collection("users").doc(emailVal).set({
+                        name: doc.data().name,
+                        remindersList: todoItems,
+                        reminders: numItems
+                    })
+                    .then(function() {
+                        console.log("Document successfully written!");
+                    })
+                    .catch(function(error) {
+                        console.error("Error writing document: ", error);
+                    });
+
+                    //remove from UI
+                    $(this).parent().remove();
+                    $("#"+newID).remove();
+                    $(this).remove();
+                    e.stopPropagation();
                 });
             }
         }
