@@ -14,22 +14,28 @@
     <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
 </head>
 <body>
+    <p id="clock"></p>
+    <div class="reminders-bg">
+        <img src="../public/icons/alarm.png">
+    </div>
     <div class="container">
         <h1 id="heading">Manage Reminders 📝</h1>
-        <a href="mainWindow.html" class="btn btn-outline-light return-button">
-            🔙
+        <a href="mainWindow.html" class="return-button">
+            <img src="../public/icons/back.png" style="width: 55px;">
             <span>Return</span>
         </a>
+        <br></br>
         <div class="alert alert-danger hidden" id="errorMsg" role="alert">
-            Please fill out all the required fields!
+            ❌ Please fill out all the required fields!
         </div>
         <div class="alert alert-success hidden" id="successMsg" role="alert">
-            Successfully added a new reminder!
+            ✔ Successfully added a new reminder!
         </div>
         <div class="row">
             <div class="col-6">
+                <li class="list-group-item active" id="remindersTitle">To-Do List</li>
                 <ul class="list-group" id="todolist">
-                    <li class="list-group-item active" id="remindersTitle">To-Do List</li>
+                    <!--generated list items go here-->
                 </ul>
             </div>
             <div class="col-6">
@@ -57,7 +63,9 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <!--submission button-->
+    <!--functional scripts-->
     <script src="../scripts/addToDo.js"></script>
+    <script src="../scripts/flashMessages.js"></script>
+    <script src="../scripts/clock.js"></script>
 </body>
 </html>

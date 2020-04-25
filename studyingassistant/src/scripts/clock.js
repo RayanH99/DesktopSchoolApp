@@ -1,33 +1,47 @@
-//local date and time script
-const notifier = require('node-notifier'); //notifications
-var notifs = []; //store all reminder notifications in here
+// local date and time script
+const notifier = require('node-notifier'); // notifications
+var notifs = []; // store all reminder notifications in here
 
-//connect to DB
+// connect to DB
 require('../scripts/dbConnection');
 var db = firebase.firestore();
 
-//request user info from backend
-ipcRenderer.invoke('getUser')
-.then((result) => 
+var submitBtn = document.getElementById("submitBtn");
+
+// if any updates were made while on the reminders page, the notifs list needs to be refreshed
+if (submitBtn != null)
+{
+  submitBtn.addEventListener("click", function(e)
+  {
+    notifs = [];
+    getUserInfo();
+  });
+}
+
+// request user info from backend
+function getUserInfo()
+{
+  ipcRenderer.invoke('getUser')
+  .then((result) => 
 {
     emailVal = result.currName;
-    //search for username via email address from the firebase cloud storage
+    // search for username via email address from the firebase cloud storage
     var username = db.collection("users").doc(emailVal);
     username.get()
     .then(function(doc) 
     {
         if (doc.exists)
         {
-            //pull reminders hashtable
+            // pull reminders hashtable
             var remindersData = doc.data().remindersList;
 
-            //loop through hashtable and apply getAlarm() to each
+            // loop through hashtable and apply getAlarm() to each
             for (const reminder in remindersData)
             {
                 getAlarm(remindersData[reminder].Date, remindersData[reminder].Time, remindersData[reminder].Desc);
             }
 
-            //create notif from reminder DB
+            // create notif from reminder DB
             function getAlarm(date, time, desc)
             {
                 reminderDate = date;
@@ -36,7 +50,7 @@ ipcRenderer.invoke('getUser')
                 notifs.push([reminderNotif, desc]);
             }
 
-            //get the 24hour time format for comparing with local time
+            // get the 24hour time format for comparing with local time
             function convertTime(timeVal)
             {
                 var oldTime = timeVal.split(':');
@@ -65,18 +79,24 @@ ipcRenderer.invoke('getUser')
     {
         console.log("Error getting document:", error);
     });
-});
+  });
+}
 
-console.log(notifs);
+// set internal clock and retrieve user info
+window.onload = function ()
+{
+  display_c();
+  getUserInfo();
+}
 
 function display_c() {
-  var refresh = 1000; //refresh every second
+  var refresh = 1000; // refresh every second
   mytime = setTimeout("display_clock()", refresh);
 }
 
 function display_clock() {
   var x = new Date();
-  //format date part
+  // format date part
   var month = x.getMonth() + 1;
   var day = x.getDate();
   var year = x.getFullYear();
@@ -88,7 +108,7 @@ function display_clock() {
   }
   var x3 = year + "-" + month + "-" + day;
 
-  //format time part
+  // format time part
   var hour = x.getHours();
   var minute = x.getMinutes();
   var second = x.getSeconds();
@@ -110,17 +130,17 @@ function display_clock() {
         notifier.notify(
             {
             title: "The Study App",
-            message: notifs[reminder][1], //extract message from reminder
-            //icon: path.join(__dirname, 'coulson.jpg'),
+            message: notifs[reminder][1], // extract message from reminder
+            // icon: path.join(__dirname, 'coulson.jpg'),
             sound: true,
             wait: true,
             },
             function (err, response) {
-            console.log(err); //Response is response from notification
+            console.log(err); // Response is response from notification
             }
         );
     }
   }
 
-  display_c(); //refresh clock
+  display_c(); // refresh clock
 }
