@@ -3,6 +3,9 @@ require('../scripts/dbConnection');
 var db = firebase.firestore();
 const {ipcRenderer} = require('electron');
 
+var newTime = "";
+var inputEle = document.getElementById('time');
+
 //request user info from backend
 ipcRenderer.invoke('getUser')
 .then((result) => 
@@ -21,8 +24,7 @@ ipcRenderer.invoke('getUser')
             var todoList = document.getElementById("todolist");
 
             var numItems = doc.data().reminders;
-            var newTime = "";
-            var inputEle = document.getElementById('time');
+            //new time and inpute ele were here
 
             for (const task in todoItems)
             {
@@ -73,58 +75,10 @@ ipcRenderer.invoke('getUser')
                     document.getElementById("errorMsg").classList.remove("hidden");
                     document.getElementById("successMsg").classList.add("hidden");
                 }
+                // location.reload();
             });
 
-            //get 12 hour format time
-            function onTimeChange() 
-            {
-                var timeSplit = inputEle.value.split(':'),
-                    hours,
-                    minutes,
-                    meridian;
-                    hours = timeSplit[0];
-                    minutes = timeSplit[1];
-                if (hours > 12) 
-                {
-                    meridian = 'PM';
-                    hours -= 12;
-                } 
-                else if (hours < 12)
-                {
-                    meridian = 'AM';
-                    if (hours == 0) 
-                    {
-                        hours = 12;
-                    }
-                } 
-                else 
-                {
-                    meridian = 'PM';
-                }
-                return newTime = hours + ':' + minutes + ' ' + meridian;
-            }
-
-            //get the 24hour time format for editing functionality
-            function twentyfourhourTime(timeVal)
-            {
-                var oldTime = timeVal.split(':');
-                var oldHour = oldTime[0];
-                var oldMin = oldTime[1].slice(0,2);
-                var newHour;
-                if (timeVal.slice(-2) == "PM")
-                {
-                    newHour = parseInt(oldHour) + 12;
-                }
-                else
-                {
-                    if (oldHour == '12'){
-                        newHour = '00';
-                    } else {
-                    newHour = oldHour;
-                    }
-                }
-                return newHour + ':' + oldMin;
-            }
+            //this is where the clock functions were
 
             //construct html card
             function createTask(newID, desc, dateVal, timeVal)
@@ -256,3 +210,54 @@ ipcRenderer.invoke('getUser')
         console.log("Error getting document:", error);
     });
 });
+
+//get 12 hour format time
+function onTimeChange() 
+{
+    var timeSplit = inputEle.value.split(':'),
+        hours,
+        minutes,
+        meridian;
+        hours = timeSplit[0];
+        minutes = timeSplit[1];
+    if (hours > 12) 
+    {
+        meridian = 'PM';
+        hours -= 12;
+    } 
+    else if (hours < 12)
+    {
+        meridian = 'AM';
+        if (hours == 0) 
+        {
+            hours = 12;
+        }
+    } 
+    else 
+    {
+        meridian = 'PM';
+    }
+    return newTime = hours + ':' + minutes + ' ' + meridian;
+}
+
+//get the 24hour time format for editing functionality
+function twentyfourhourTime(timeVal)
+{
+    var oldTime = timeVal.split(':');
+    var oldHour = oldTime[0];
+    var oldMin = oldTime[1].slice(0,2);
+    var newHour;
+    if (timeVal.slice(-2) == "PM")
+    {
+        newHour = parseInt(oldHour) + 12;
+    }
+    else
+    {
+        if (oldHour == '12'){
+            newHour = '00';
+        } else {
+        newHour = oldHour;
+        }
+    }
+    return newHour + ':' + oldMin;
+}
