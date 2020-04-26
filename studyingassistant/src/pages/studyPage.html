@@ -9,13 +9,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
+    <div class="study-bg">
+        <img src="../public/icons/alarm.png">
+    </div>
     <div class="container">
-        <h1 id="heading">BEGIN STUDYING ⏰</h1>
-        <p>Study using the Pomodoro Technique! 🍅</p>
-        <a href="mainWindow.html" class="btn btn-outline-light return-button">
-            🔙
+        <a href="mainWindow.html" class="return-button">
+            <img src="../public/icons/back.png" style="width: 55px;">
             <span>Return</span>
         </a>
+        <h1 id="heading">BEGIN STUDYING ⏰</h1>
+        <p>Study using the Pomodoro Technique! 🍅</p>
         <div class="card">
             <a href ="#" id ="alarmButton" onclick ="toggleAlert(1)" class="timerAlarm">🔊</a>
             <a href ="#" id ="notificationButton" onclick ="toggleAlert(2)" class="timerNotification">🔔</a>
