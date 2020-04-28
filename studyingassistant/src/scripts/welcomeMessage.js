@@ -41,6 +41,7 @@ var wordBtn = document.getElementById("wordBtn");
 var sheetsBtn = document.getElementById("sheetsBtn");
 var pptBtn = document.getElementById("pptBtn");
 var portalBtn = document.getElementById("portalBtn");
+var settings = document.getElementById("settingsBtn");
 
 
 //bottom docker shortcuts
@@ -63,6 +64,29 @@ portalBtn.addEventListener('click', function()
 {
     require("electron").shell.openExternal('https://cap.mcmaster.ca/mcauth/login.jsp?app_id=1505&app_name=Avenue');
 });
+
+settingsBtn.addEventListener('click', () => {
+    createBrowserWindow();
+});
+
+// create settings window
+function createBrowserWindow() {
+    const remote = require('electron').remote;
+    const url = require('url');
+    const path = require('path');
+    const BrowserWindow = remote.BrowserWindow;
+    const win = new BrowserWindow({
+        width:600, 
+        height:540, 
+        webPreferences: {nodeIntegration: true}
+    });
+  
+    win.loadURL(url.format({
+        pathname: path.join(__dirname, '../pages/settingsPage.html'),
+        protocol: 'file:', 
+        slashes: true
+    }));
+}
 
 //logout functionality ********need to clear info from backend storage as well so no info is saved
 var logoutBtn = document.getElementById("logoutBtn");

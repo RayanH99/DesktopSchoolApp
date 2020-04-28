@@ -23,7 +23,7 @@ function getUserInfo()
 {
   ipcRenderer.invoke('getUser')
   .then((result) => 
-{
+  {
     emailVal = result.currName;
     // search for username via email address from the firebase cloud storage
     var username = db.collection("users").doc(emailVal);
