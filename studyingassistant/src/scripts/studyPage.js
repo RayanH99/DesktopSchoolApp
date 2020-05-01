@@ -28,6 +28,9 @@ var timeStudied = document.getElementById('timeStudied');
 var timeOnBreak = document.getElementById('timeOnBreak');
 var progressBar = document.getElementById("myBar");
 
+//notifications
+const notifier = require('node-notifier');
+
 // call these once to stop clock from taking too long on first use of the setInterval function
 updateTimer(); 
 updateStudiedTime();
@@ -54,6 +57,26 @@ function updateTimer(){
             studiedID = 0;
             clearInterval(breakID);
             breakID = 0;
+            
+            if(toggleAlarm == 1){
+                var alarm = document.getElementById("alarm")
+                alarm.load();
+                alarm.play();
+            }
+
+            if(toggleNotification == 1){
+                notifier.notify(
+                    {
+                    title: 'The Study App',
+                    message: "Timer complete!",
+                    sound: true, // Only Notification Center or Windows Toasters
+                    wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait
+                    },
+                    function(err, response) {
+                    // Response is response from notification
+                    }
+                );
+            }
         }
     }
 
@@ -167,12 +190,29 @@ function updateBreakTime(){
     totalBreakTime++;
 }
 
+//toggle the on/off state for alerts (1 = on, 0 = off)
+var toggleAlarm = 1;
+var toggleNotification = 1;
+
+//function alters state of alerts, argument takes 1 or 2 depending on which alert is being toggled
 function toggleAlert(alertType){
     if(alertType == 1){
         var alarmButton = document.getElementById('alarmButton');
         alarmButton.innerHTML = (alarmButton.innerHTML == "🔊") ? "🔇" : "🔊";
+
+        if(alarmButton.innerHTML == "🔊"){
+            toggleAlarm = 1;
+        } else {
+            toggleAlarm = 0;
+        }
     } else {
         var notificationButton = document.getElementById('notificationButton');
         notificationButton.innerHTML = (notificationButton.innerHTML == "🔔") ? "🔕" : "🔔";
+
+        if(notificationButton.innerHTML == "🔔"){
+            toggleNotification = 1;
+        } else {
+            toggleNotification = 0;
+        }
     }
 }

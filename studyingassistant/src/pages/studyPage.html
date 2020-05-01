@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
+    <!-- hidden audio for alarm -->
+    <audio controls id="alarm">
+        <source src="../public/audio/studyAlarm.mp3"></source>
+    </audio>
     <div class="study-bg">
         <img src="../public/icons/alarm.png">
     </div>
@@ -34,7 +38,7 @@
                     <div class="dropdown">
                         <button class="btn btn-outline-info top-buffer miscBtn dropdown-toggle dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">⏳ Break </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                            <button class="dropdown-item" onclick="breakTimer(5)">🥪 Short Break | 5 minutes</button>
+                            <button class="dropdown-item" onclick="breakTimer(0.1)">🥪 Short Break | 5 minutes</button>
                             <button class="dropdown-item" onclick="breakTimer(15)">😴 Long Break | 15 minutes</button>
                         </div>
                     </div>
