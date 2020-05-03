@@ -12,11 +12,18 @@ var onePercent;
 
 //IDs used for setInterval for the pomodoro timer and study/break time trackers
 var intervalID; 
-var studiedID; 
-var breakID; 
 
-//used to differentiate between time when studying and time when on break (check March 30, 2020 NOTE in google doc for more info)
+//toggle between time when studying and time when on break (check March 30, 2020 NOTE in google doc for more info)
 var studying = 2; 
+
+//toggle the on/off state for alerts (1 = on, 0 = off)
+var toggleAlarm = 1;
+var toggleNotification = 1;
+
+//used to indicate when the reset function is called
+//this is needed to prevent incrementing the study/break time trackers when selecting study/break lengths
+//more detail found in May 3rd NOTE
+var resetTimerClicked = 0;
 
 //setting info to be changed from html document
 var pomodoroTimer = document.getElementById('pomodoro-timer');
@@ -31,10 +38,10 @@ var progressBar = document.getElementById("myBar");
 //notifications
 const notifier = require('node-notifier');
 
-// call these once to stop clock from taking too long on first use of the setInterval function
-updateTimer(); 
-updateStudiedTime();
-updateBreakTime();
+// call these once to stop all timers from taking too long on first use of the setInterval function
+updateTimer();
+totalStudiedTime++; 
+totalBreakTime++;
 
 function updateTimer(){
     let minutes = Math.floor(time/60);
@@ -44,6 +51,32 @@ function updateTimer(){
     seconds = seconds < 10 ? '0' + seconds : seconds; // if seconds less than 10, make it 00, 01, 02, etc.
 
     pomodoroTimer.innerHTML = minutes + ':'+ seconds;
+
+    // update study and break time trackers every second, only works if the parent function is NOT called from resetTimer()
+    if(resetTimerClicked == 0){ 
+        if(studying == 1){
+            let studiedMinutes = Math.floor(totalStudiedTime/60);
+            let studiedSeconds = totalStudiedTime % 60;
+        
+            studiedMinutes = studiedMinutes < 10 ? '0' + studiedMinutes : studiedMinutes;
+            studiedSeconds = studiedSeconds < 10 ? '0' + studiedSeconds : studiedSeconds;
+        
+            timeStudied.innerHTML = studiedMinutes + ":" + studiedSeconds;
+            
+            totalStudiedTime++;
+        }else if(studying == 0){
+            let breakMinutes = Math.floor(totalBreakTime/60);
+            let breakSeconds = totalBreakTime % 60;
+        
+            breakMinutes = breakMinutes < 10 ? '0' + breakMinutes : breakMinutes;
+            breakSeconds = breakSeconds < 10 ? '0' + breakSeconds : breakSeconds;
+        
+            timeOnBreak.innerHTML = breakMinutes + ":" + breakSeconds;
+            
+            totalBreakTime++;
+        }
+    }
+   resetTimerClicked = 0;
     
     // progress bar
     if(width <= 100){
@@ -53,10 +86,6 @@ function updateTimer(){
         } 
         
         if(width == 100){
-            clearInterval(studiedID);
-            studiedID = 0;
-            clearInterval(breakID);
-            breakID = 0;
             
             if(toggleAlarm == 1){
                 var alarm = document.getElementById("alarm")
@@ -80,18 +109,18 @@ function updateTimer(){
         }
     }
 
-    if(time != 0) time--;
+    if(time != 0) {
+        time--;
+    } else {
+        clearInterval(intervalID);
+        intervalID = 0;
+    }
 }
 
 function startTimer(){
     if(!intervalID){ // to prevent multiple setIntervals being queued up
         
         intervalID = setInterval(updateTimer, 1000);
-        if(studying == 1){
-            studiedID = setInterval(updateStudiedTime, 1000);
-        } else if(studying == 0){
-            breakID = setInterval(updateBreakTime, 1000);
-        }
 
         startButton.classList.remove("btn-outline-info"); 
         startButton.classList.add("btn-info"); // fill box with colour
@@ -104,10 +133,6 @@ function startTimer(){
 function pauseTimer(){
     clearInterval(intervalID);
     intervalID = 0;
-    clearInterval(studiedID);
-    studiedID = 0;
-    clearInterval(breakID);
-    breakID = 0;
 
     pauseButton.classList.remove("btn-outline-danger"); 
     pauseButton.classList.add("btn-danger"); // fill box with colour
@@ -119,6 +144,7 @@ function pauseTimer(){
 function resetTimer(){
     time = startTime * 60;
     width = 0;
+    resetTimerClicked = 1;
     updateTimer();
     pauseTimer();
 }
@@ -165,34 +191,6 @@ function breakTimer(breakLength){
     taskMessage.innerHTML = "🚀 Select Task "; // reset task select dropdown button text
     resetTimer();
 }
-
-function updateStudiedTime(){
-    let studiedMinutes = Math.floor(totalStudiedTime/60);
-    let studiedSeconds = totalStudiedTime % 60;
-
-    studiedMinutes = studiedMinutes < 10 ? '0' + studiedMinutes : studiedMinutes;
-    studiedSeconds = studiedSeconds < 10 ? '0' + studiedSeconds : studiedSeconds;
-
-    timeStudied.innerHTML = studiedMinutes + ":" + studiedSeconds;
-    
-    totalStudiedTime++;
-}
-
-function updateBreakTime(){
-    let breakMinutes = Math.floor(totalBreakTime/60);
-    let breakSeconds = totalBreakTime % 60;
-
-    breakMinutes = breakMinutes < 10 ? '0' + breakMinutes : breakMinutes;
-    breakSeconds = breakSeconds < 10 ? '0' + breakSeconds : breakSeconds;
-
-    timeOnBreak.innerHTML = breakMinutes + ":" + breakSeconds;
-
-    totalBreakTime++;
-}
-
-//toggle the on/off state for alerts (1 = on, 0 = off)
-var toggleAlarm = 1;
-var toggleNotification = 1;
 
 //function alters state of alerts, argument takes 1 or 2 depending on which alert is being toggled
 function toggleAlert(alertType){
