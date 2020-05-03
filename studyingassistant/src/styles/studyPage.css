@@ -56,6 +56,7 @@ a span:hover
     border-radius: 20px;
     background-color: #5cb85c;
     margin-bottom: 20px;
+    transition: width 2s;
 }
 
 .timerAlarm, .timerAlarm:focus
