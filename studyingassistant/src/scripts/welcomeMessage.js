@@ -45,23 +45,19 @@ var settings = document.getElementById("settingsBtn");
 
 
 //bottom docker shortcuts
-wordBtn.addEventListener('click', function()
-{
+wordBtn.addEventListener('click', function() {
     require("electron").shell.openExternal('https://docs.google.com/');
 });
 
-sheetsBtn.addEventListener('click', function()
-{
+sheetsBtn.addEventListener('click', function() {
     require("electron").shell.openExternal('https://docs.google.com/spreadsheets/u/0/');
 });
 
-pptBtn.addEventListener('click', function()
-{
+pptBtn.addEventListener('click', function() {
     require("electron").shell.openExternal('https://docs.google.com/presentation/u/0/');
 });
 
-portalBtn.addEventListener('click', function()
-{
+portalBtn.addEventListener('click', function() {
     require("electron").shell.openExternal('https://cap.mcmaster.ca/mcauth/login.jsp?app_id=1505&app_name=Avenue');
 });
 
@@ -91,20 +87,16 @@ function createBrowserWindow() {
 //logout functionality ********need to clear info from backend storage as well so no info is saved
 var logoutBtn = document.getElementById("logoutBtn");
 
-logoutBtn.addEventListener('click', function()
-{
+logoutBtn.addEventListener('click', function() {
     ipcRenderer.invoke('logoutUser');
     firebase.auth().signOut()
-    .then(function() 
-    {
+    .then(function() {
         // Sign-out successful.
         document.location.href = "../pages/loginPage.html";
     })
-    .catch(function(error) 
-    {
+    .catch(function(error) {
         // An error happened
-        if(error)
-        {
+        if(error) {
             notifier.notify(
                 {
                   title: 'The Study App',
