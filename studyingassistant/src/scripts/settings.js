@@ -34,5 +34,15 @@ let save = document.getElementById("submitBtn");
 save.addEventListener("click", ()=> {
     newName = document.getElementById("inputUsername3").value;
     portalLink = document.getElementById("inputSchool").value;
-    db.collection("users").doc(emailVal).update({name: newName, portalLink: portalLink});
+    try {
+        db.collection("users").doc(emailVal).update({name: newName, portalLink: portalLink});
+        //show success msg
+        document.getElementById("successMsg").classList.remove("hidden");
+        document.getElementById("errorMsg").classList.add("hidden");
+    } catch {
+        //show error msg
+        document.getElementById("successMsg").classList.add("hidden");
+        document.getElementById("errorMsg").classList.remove("hidden");
+    }
+    
 });
