@@ -4,25 +4,33 @@ var emailVal = "";
 
 const {ipcRenderer} = require('electron');
 
+let username;
+let portalLink;
 //request user info from backend
 ipcRenderer.invoke('getUser')
 .then((result) => 
 {
     emailVal = result.currName;
     //search for username via email address from the firebase cloud storage
-    var username = db.collection("users").doc(emailVal);
-    username.get()
-    .then(function(doc) 
-    {
-        if (doc.exists) 
-            welcomeMsg.innerHTML = greet + ', ' +doc.data().name+ ' 👋';
+    return username = db.collection("users").doc(emailVal);
+})
+.then(username => {
+    return username.get()
+})
+.then(doc =>
+{
+    if (doc.exists) {
+        document.getElementById("heading").innerHTML = greet + ', ' +doc.data().name+ ' 👋';
+        if (doc.data().portalLink)
+            portalLink = doc.data().portalLink;
         else
-            console.log("No such document!");
-    })
-    .catch(function(error) 
-    {
-        console.log("Error getting document:", error);
-    });
+            portalLink = 'https://cap.mcmaster.ca/mcauth/login.jsp?app_id=1505&app_name=Avenue';
+    }
+    else
+        console.log("No such document!");
+})
+.catch(function(error) {
+    console.log("Error getting document:", error);
 });
 
 var myDate = new Date();
@@ -45,20 +53,20 @@ var settings = document.getElementById("settingsBtn");
 
 
 //bottom docker shortcuts
-wordBtn.addEventListener('click', function() {
+wordBtn.addEventListener('click', ()=> {
     require("electron").shell.openExternal('https://docs.google.com/');
 });
 
-sheetsBtn.addEventListener('click', function() {
+sheetsBtn.addEventListener('click', ()=> {
     require("electron").shell.openExternal('https://docs.google.com/spreadsheets/u/0/');
 });
 
-pptBtn.addEventListener('click', function() {
+pptBtn.addEventListener('click', ()=> {
     require("electron").shell.openExternal('https://docs.google.com/presentation/u/0/');
 });
 
-portalBtn.addEventListener('click', function() {
-    require("electron").shell.openExternal('https://cap.mcmaster.ca/mcauth/login.jsp?app_id=1505&app_name=Avenue');
+portalBtn.addEventListener('click', ()=> {
+    require("electron").shell.openExternal(portalLink);
 });
 
 settingsBtn.addEventListener('click', () => {
@@ -84,7 +92,7 @@ function createBrowserWindow() {
     }));
 }
 
-//logout functionality ********need to clear info from backend storage as well so no info is saved
+//logout functionality
 var logoutBtn = document.getElementById("logoutBtn");
 
 logoutBtn.addEventListener('click', function() {
@@ -97,18 +105,16 @@ logoutBtn.addEventListener('click', function() {
     .catch(function(error) {
         // An error happened
         if(error) {
-            notifier.notify(
-                {
-                  title: 'The Study App',
-                  message: error.message,
-                  // icon: path.join(__dirname, 'coulson.jpg'),
-                  sound: true, // Only Notification Center or Windows Toasters
-                  wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait
-                },
-                function(err, response) {
-                  // Response is response from notification
-                }
-            );
+            notifier.notify({
+                title: 'The Study App',
+                message: error.message,
+                // icon: path.join(__dirname, 'coulson.jpg'),
+                sound: true, // Only Notification Center or Windows Toasters
+                wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait
+            },
+            function(err, response) {
+                // Response is response from notification
+            });
         }
     });
 })
