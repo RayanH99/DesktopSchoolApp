@@ -45,6 +45,12 @@ a:hover span {
     font-size: 24px;
 }
 
+#subMessage
+{
+    color: white;
+    display: inline-block;
+}
+
 .container
 {
     text-align: center;

@@ -65,7 +65,7 @@ a span:hover
 {
     position: absolute;
     top: 30px;
-    right: 65px;
+    right: 85px;
     transition: transform .2s;
 }
 
@@ -73,7 +73,7 @@ a span:hover
 {
     position: absolute;
     top: 30px;
-    right: 30px; 
+    right: 50px; 
     transition: transform .2s;
 }
 
