@@ -44,7 +44,9 @@ a span:hover
 
 #myProgress 
 {
-    width: 100%;
+    margin-left: 30px;
+    margin-right: 30px;
+    width: 590px;
     border-radius: 20px;
     background-color: #f5f5f5;
 }
