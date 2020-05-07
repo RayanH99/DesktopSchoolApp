@@ -7,6 +7,11 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     <meta charset='utf-8'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+       <!-- The core Firebase JS SDK is always required and must be listed first -->
+       <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+       <!-- Add additional services that you want to use -->
+       <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
+       <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
 </head>
 <body>
     <!-- hidden audio for alarm -->
@@ -22,7 +27,7 @@
             <span>Return</span>
         </a>
         <h1 id="heading">BEGIN STUDYING ⏰</h1>
-        <p>Study using the Pomodoro Technique! 🍅</p>
+        <p id="subMessage">Study using the Pomodoro Technique! 🍅</p>
         <div class="card">
             <a href ="#" id ="alarmButton" onclick ="toggleAlert(1)" class="timerAlarm">🔊</a>
             <a href ="#" id ="notificationButton" onclick ="toggleAlert(2)" class="timerNotification">🔔</a>
