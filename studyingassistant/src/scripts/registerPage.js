@@ -26,35 +26,22 @@ signupBtn.addEventListener('click', function()
         .catch(function(error) {
             console.error("Error writing document: ", error);
         });
-        notifier.notify(
-            {
-              title: 'The Study App',
-              message: 'Account successfully created!',
-              // icon: path.join(__dirname, 'coulson.jpg'),
-              sound: true, // Only Notification Center or Windows Toasters
-              wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait
-            },
-            function(err, response) {
-              // Response is response from notification
-            }
-        );
+        let successFlash = document.getElementById("successMsg");
+        successFlash.classList.remove("hidden");
         document.location.href = "../pages/loginPage.html";
     })
     .catch(function(error){
         if(error)
         {
-            notifier.notify(
-                {
-                  title: 'The Study App',
-                  message: error.message,
-                  // icon: path.join(__dirname, 'coulson.jpg'),
-                  sound: true, // Only Notification Center or Windows Toasters
-                  wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait
-                },
-                function(err, response) {
-                  // Response is response from notification
-                }
-            );
+            let errorFlash = document.getElementById("errorMsg");
+            errorFlash.classList.remove("hidden");
+            if (error.message == 'The password is invalid or the user does not have a password.') {
+                errorFlash.innerHTML = '❌ Incorrect Password!';
+            } else if (error.message == 'The email address is badly formatted.') {
+                errorFlash.innerHTML = '❌ Invalid email format!';
+            } else {
+                errorFlash.innerHTML = '❌ '+error.message;
+            }
         }
     })
 });

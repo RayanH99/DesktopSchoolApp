@@ -25,6 +25,8 @@ loginBtn.addEventListener('click', function()
 
             //send info to backend
             ipcRenderer.send('sendUserInfo', user);
+            let successFlash = document.getElementById("successMsg");
+            successFlash.classList.remove("hidden");
 
             return window.location = "../pages/mainWindow.html";
         })
@@ -33,18 +35,15 @@ loginBtn.addEventListener('click', function()
             loadingIcon.classList.add("hidden");
             if(error)
             {
-                notifier.notify(
-                    {
-                      title: 'The Study App',
-                      message: error.message,
-                      // icon: path.join(__dirname, 'coulson.jpg'),
-                      sound: true, // Only Notification Center or Windows Toasters
-                      wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait
-                    },
-                    function(err, response) {
-                      // Response is response from notification
-                    }
-                );
+                let errorFlash = document.getElementById("errorMsg");
+                errorFlash.classList.remove("hidden");
+                if (error.message == 'The password is invalid or the user does not have a password.') {
+                    errorFlash.innerHTML = '❌ Incorrect Password!';
+                } else if (error.message == 'The email address is badly formatted.') {
+                    errorFlash.innerHTML = '❌ Invalid email format!';
+                } else {
+                    errorFlash.innerHTML = '❌ '+error.message;
+                }
             }
         });
     })

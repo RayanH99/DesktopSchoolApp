@@ -13,7 +13,6 @@ ipcMain.on('sendUserInfo', (event, user) =>
 {
     currUser.accountHolder = user;
     currUser.currName = user.email;
-    console.log(currUser);
 });
 
 //sends back user info after reaching the welcome page
@@ -26,7 +25,6 @@ ipcMain.handle('logoutUser', (event)=>
 {
     //clear info
     currUser = new Object();
-    console.log(currUser);
 });
 
 // Listen for app to be ready
