@@ -59,8 +59,12 @@ ipcRenderer.invoke('getUser')
 })
 .then(function(doc) {
     if (doc.exists){
-        totalStudiedTime = doc.data().studyTimeTrackers().study;
-        totalBreakTime = doc.studyTimeTrackers().break;
+        trackedTimers = doc.data().studyTimeTrackers;
+
+        //CONTINUE HERE ....
+
+        //totalStudiedTime = trackedTimers[1].study;
+        //totalBreakTime = trackedTimers[0].break;
     }
     else
         console.log("No such document!");
@@ -250,7 +254,7 @@ function toggleAlert(alertType){
 //update tracking timers in the db when the user presses return
 function updateTimerDB(){
 
-    var trackedTime = {study: totalStudiedTime, break: totalBreakTime};
+    var trackedTime = {study: totalStudiedTime-1, break: totalBreakTime-1};
     db.collection("users").doc(emailVal).set({
         studyTimeTrackers: trackedTime
     })
