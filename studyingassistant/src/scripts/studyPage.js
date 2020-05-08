@@ -38,6 +38,38 @@ var progressBar = document.getElementById("myBar");
 //notifications
 const notifier = require('node-notifier');
 
+//db instance
+require('../scripts/dbConnection');
+var db = firebase.firestore();
+const {ipcRenderer} = require('electron');
+
+
+// request user info from backend
+let username;
+let emailVal;
+
+ipcRenderer.invoke('getUser')
+.then((result) => {
+    emailVal = result.currName;
+    //search for username via email address from the firebase cloud storage
+    return username = db.collection("users").doc(emailVal);
+})
+.then (username => {
+    return username.get()
+})
+.then(function(doc) {
+    if (doc.exists){
+        totalStudiedTime = doc.data().studyTimeTrackers().study;
+        totalBreakTime = doc.studyTimeTrackers().break;
+    }
+    else
+        console.log("No such document!");
+})
+.catch(function(error) {
+    console.log("Error getting document:", error);
+});
+
+
 // call these once to stop all timers from taking too long on first use of the setInterval function
 updateTimer();
 totalStudiedTime++; 
@@ -213,4 +245,14 @@ function toggleAlert(alertType){
             toggleNotification = 0;
         }
     }
+}
+
+//update tracking timers in the db when the user presses return
+function updateTimerDB(){
+
+    var trackedTime = {study: totalStudiedTime, break: totalBreakTime};
+    db.collection("users").doc(emailVal).set({
+        studyTimeTrackers: trackedTime
+    })
+
 }
