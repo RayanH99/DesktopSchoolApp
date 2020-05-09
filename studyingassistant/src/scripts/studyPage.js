@@ -263,7 +263,7 @@ function updateTimerDB(){
 
     //if( == dayName){}
 
-
+    // try changing this to .update and see if it works - Uzair
     db.collection("users").doc(emailVal).set({
         studyTimeTrackers: {
             [dayName]:{

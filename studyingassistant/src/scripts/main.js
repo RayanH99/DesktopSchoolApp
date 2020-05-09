@@ -1,6 +1,7 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
+const express = require('express');
 
 const {app, BrowserWindow, Menu, Notification, ipcMain} = electron;
 
@@ -27,15 +28,16 @@ ipcMain.handle('logoutUser', (event)=>
     currUser = new Object();
 });
 
-/* Load the HTTP library */
-var http = require("http");
+// backend setup for API request handling
+server = express();
 
-/* Create an HTTP server to handle responses */
-http.createServer((req, res) => {
-    res.writeHead(200, {"Content-Type": "text/plain"});
-    res.write("Hello World");
-    res.end();
-}).listen(8888);
+server.get('/', (req, res) => {
+    res.send("Server connected. Welcome.");
+});
+
+server.listen(8888, ()=> {
+    console.log("API Server started");
+});
 
 // Listen for app to be ready
 app.on('ready', function(){
