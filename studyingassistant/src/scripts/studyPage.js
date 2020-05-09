@@ -59,12 +59,13 @@ ipcRenderer.invoke('getUser')
 })
 .then(function(doc) {
     if (doc.exists){
-        trackedTimers = doc.data().studyTimeTrackers;
-
+        
+        studyTimerDB = doc.data().studyTimeTrackers;
         //CONTINUE HERE ....
 
-        //totalStudiedTime = trackedTimers[1].study;
-        //totalBreakTime = trackedTimers[0].break;
+        totalStudiedTime = studyTimerDB[dayName].study;
+        totalBreakTime = studyTimerDB[dayName].break;
+  
     }
     else
         console.log("No such document!");
@@ -73,11 +74,16 @@ ipcRenderer.invoke('getUser')
     console.log("Error getting document:", error);
 });
 
-
 // call these once to stop all timers from taking too long on first use of the setInterval function
 updateTimer();
 totalStudiedTime++; 
 totalBreakTime++;
+
+// retrieve current day (mon, tues, wed, etc.)
+var d = new Date();
+var dayName = d.toString().split(' ')[0];
+
+console.log(dayName);
 
 function updateTimer(){
     let minutes = Math.floor(time/60);
@@ -254,9 +260,17 @@ function toggleAlert(alertType){
 //update tracking timers in the db when the user presses return
 function updateTimerDB(){
 
-    var trackedTime = {study: totalStudiedTime-1, break: totalBreakTime-1};
+
+    //if( == dayName){}
+
+
     db.collection("users").doc(emailVal).set({
-        studyTimeTrackers: trackedTime
+        studyTimeTrackers: {
+            [dayName]:{
+                study: totalStudiedTime, 
+                break: totalBreakTime
+            }
+        }
     })
 
 }
