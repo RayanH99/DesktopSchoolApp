@@ -27,6 +27,16 @@ ipcMain.handle('logoutUser', (event)=>
     currUser = new Object();
 });
 
+/* Load the HTTP library */
+var http = require("http");
+
+/* Create an HTTP server to handle responses */
+http.createServer((req, res) => {
+    res.writeHead(200, {"Content-Type": "text/plain"});
+    res.write("Hello World");
+    res.end();
+}).listen(8888);
+
 // Listen for app to be ready
 app.on('ready', function(){
     // Create new window
