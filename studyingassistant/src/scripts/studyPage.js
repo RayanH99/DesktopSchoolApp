@@ -61,11 +61,29 @@ ipcRenderer.invoke('getUser')
     if (doc.exists){
         
         studyTimerDB = doc.data().studyTimeTrackers;
-        //CONTINUE HERE ....
 
         totalStudiedTime = studyTimerDB[dayName].study;
         totalBreakTime = studyTimerDB[dayName].break;
-  
+        
+        let studiedMinutes = Math.floor(totalStudiedTime/60);
+        let studiedSeconds = totalStudiedTime % 60;
+    
+        studiedMinutes = studiedMinutes < 10 ? '0' + studiedMinutes : studiedMinutes;
+        studiedSeconds = studiedSeconds < 10 ? '0' + studiedSeconds : studiedSeconds;
+    
+        timeStudied.innerHTML = studiedMinutes + ":" + studiedSeconds;
+
+        totalStudiedTime++;
+
+        let breakMinutes = Math.floor(totalBreakTime/60);
+        let breakSeconds = totalBreakTime % 60;
+    
+        breakMinutes = breakMinutes < 10 ? '0' + breakMinutes : breakMinutes;
+        breakSeconds = breakSeconds < 10 ? '0' + breakSeconds : breakSeconds;
+    
+        timeOnBreak.innerHTML = breakMinutes + ":" + breakSeconds;
+
+        totalBreakTime++;
     }
     else
         console.log("No such document!");
@@ -96,27 +114,7 @@ function updateTimer(){
 
     // update study and break time trackers every second, only works if the parent function is NOT called from resetTimer()
     if(resetTimerClicked == 0){ 
-        if(studying == 1){
-            let studiedMinutes = Math.floor(totalStudiedTime/60);
-            let studiedSeconds = totalStudiedTime % 60;
-        
-            studiedMinutes = studiedMinutes < 10 ? '0' + studiedMinutes : studiedMinutes;
-            studiedSeconds = studiedSeconds < 10 ? '0' + studiedSeconds : studiedSeconds;
-        
-            timeStudied.innerHTML = studiedMinutes + ":" + studiedSeconds;
-            
-            totalStudiedTime++;
-        }else if(studying == 0){
-            let breakMinutes = Math.floor(totalBreakTime/60);
-            let breakSeconds = totalBreakTime % 60;
-        
-            breakMinutes = breakMinutes < 10 ? '0' + breakMinutes : breakMinutes;
-            breakSeconds = breakSeconds < 10 ? '0' + breakSeconds : breakSeconds;
-        
-            timeOnBreak.innerHTML = breakMinutes + ":" + breakSeconds;
-            
-            totalBreakTime++;
-        }
+        updateTimeTrackers();
     }
    resetTimerClicked = 0;
     
@@ -257,20 +255,42 @@ function toggleAlert(alertType){
     }
 }
 
+function updateTimeTrackers(){
+    if(studying == 1){
+        let studiedMinutes = Math.floor(totalStudiedTime/60);
+        let studiedSeconds = totalStudiedTime % 60;
+    
+        studiedMinutes = studiedMinutes < 10 ? '0' + studiedMinutes : studiedMinutes;
+        studiedSeconds = studiedSeconds < 10 ? '0' + studiedSeconds : studiedSeconds;
+    
+        timeStudied.innerHTML = studiedMinutes + ":" + studiedSeconds;
+        
+        totalStudiedTime++;
+    }else if(studying == 0){
+        let breakMinutes = Math.floor(totalBreakTime/60);
+        let breakSeconds = totalBreakTime % 60;
+    
+        breakMinutes = breakMinutes < 10 ? '0' + breakMinutes : breakMinutes;
+        breakSeconds = breakSeconds < 10 ? '0' + breakSeconds : breakSeconds;
+    
+        timeOnBreak.innerHTML = breakMinutes + ":" + breakSeconds;
+        
+        totalBreakTime++;
+    }
+}
+
+
 //update tracking timers in the db when the user presses return
 function updateTimerDB(){
 
-
     //if( == dayName){}
 
+    studyTimerDB[dayName] = {
+        study: totalStudiedTime, 
+        break: totalBreakTime
+    }
+
     // try changing this to .update and see if it works - Uzair
-    db.collection("users").doc(emailVal).set({
-        studyTimeTrackers: {
-            [dayName]:{
-                study: totalStudiedTime, 
-                break: totalBreakTime
-            }
-        }
-    })
+    db.collection("users").doc(emailVal).update({studyTimeTrackers: studyTimerDB})
 
 }
