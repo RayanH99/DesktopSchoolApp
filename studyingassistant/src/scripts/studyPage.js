@@ -1,9 +1,9 @@
 var startTime = 0; // this value will change depending on what the user selects, default value is 25:00
 var time = startTime * 60; //number of seconds total
 var totalStudiedTime = 0; 
-var studiedTime = totalStudiedTime * 60;
+//var studiedTime = totalStudiedTime * 60;
 var totalBreakTime = 0;
-var breakTime = totalBreakTime * 60;
+//var breakTime = totalBreakTime * 60;
 var width = 0;
 
 //this value is for creating 1 percent of the progress bar
@@ -84,6 +84,7 @@ ipcRenderer.invoke('getUser')
         timeOnBreak.innerHTML = breakMinutes + ":" + breakSeconds;
 
         totalBreakTime++;
+
     }
     else
         console.log("No such document!");
@@ -97,9 +98,9 @@ updateTimer();
 totalStudiedTime++; 
 totalBreakTime++;
 
-// retrieve current day (mon, tues, wed, etc.)
+// retrieve current day (in the format: May 11 2020)
 var d = new Date();
-var dayName = d.toString().split(' ')[0];
+var dayName = d.toString().split(' ')[1] + " " + d.toString().split(' ')[2] +  " " + d.toString().split(' ')[3];
 
 console.log(dayName);
 
@@ -134,17 +135,32 @@ function updateTimer(){
             }
 
             if(toggleNotification == 1){
-                notifier.notify(
-                    {
-                    title: 'The Study App',
-                    message: "Timer complete!",
-                    sound: true, // Only Notification Center or Windows Toasters
-                    wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait
-                    },
-                    function(err, response) {
-                    // Response is response from notification
-                    }
-                );
+                if(studying == 1){
+                    notifier.notify(
+                        {
+                        title: 'The Study App',
+                        message: "Great work, your study session is complete! Time for a break!",
+                        sound: true, // Only Notification Center or Windows Toasters
+                        wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait
+                        },
+                        function(err, response) {
+                        // Response is response from notification
+                        }
+                    );
+                } else {
+                    notifier.notify(
+                        {
+                        title: 'The Study App',
+                        message: "Break time is over, back to work!",
+                        sound: true, // Only Notification Center or Windows Toasters
+                        wait: true // Wait with callback, until user action is taken against notification, does not apply to Windows Toasters as they always wait
+                        },
+                        function(err, response) {
+                        // Response is response from notification
+                        }
+                    );
+                }
+
             }
         }
     }
@@ -279,18 +295,13 @@ function updateTimeTrackers(){
     }
 }
 
-
 //update tracking timers in the db when the user presses return
 function updateTimerDB(){
-
-    //if( == dayName){}
 
     studyTimerDB[dayName] = {
         study: totalStudiedTime, 
         break: totalBreakTime
     }
 
-    // try changing this to .update and see if it works - Uzair
     db.collection("users").doc(emailVal).update({studyTimeTrackers: studyTimerDB})
-
 }
