@@ -25,6 +25,7 @@ ipcRenderer.invoke('getUser')
         prevStudyHours = doc.data().prevStudyAvg;
         prevBreakHours = doc.data().prevBreakAvg;
         calculateAvg();
+        createChart();
     }
     else
         console.log("No such document!");
@@ -52,50 +53,52 @@ const calculateAvg = () => {
     document.getElementById("prevAvgBreak").innerText = 'Last Week Average Break Time: '+prevBreakHours.toFixed(2)+' hours';
 }
 
-var ctx = document.getElementById('chart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'],
-        datasets: [{
-            label: 'hours studied',
-            data: studiedHours,
-            backgroundColor: [
-                'rgba(54, 162, 235, 0.7)',
-                'rgba(54, 162, 235, 0.7)',
-                'rgba(54, 162, 235, 0.7)',
-                'rgba(54, 162, 235, 0.7)',
-                'rgba(54, 162, 235, 0.7)',
-                'rgba(54, 162, 235, 0.7)',
-                'rgba(54, 162, 235, 0.7)'
-            ],
-            borderColor: [
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        legend: {
-            display: false
-        },
-        scales: {
-            yAxes: [{
-                display: true,
-                ticks: {
-                    beginAtZero: true
-                }
+const createChart = () => {
+    var ctx = document.getElementById('chart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'hours studied',
+                data: studiedHours,
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(54, 162, 235, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(54, 162, 235, 1)'
+                ],
+                borderWidth: 1
             }]
         },
-        title: {
-            display: true,
-            text: 'Hours Studied'
+        options: {
+            legend: {
+                display: false
+            },
+            scales: {
+                yAxes: [{
+                    display: true,
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            title: {
+                display: true,
+                text: 'Hours Studied'
+            }
         }
-    }
-});
+    });
+}
