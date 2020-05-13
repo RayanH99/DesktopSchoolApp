@@ -30,19 +30,12 @@ ipcRenderer.invoke('getUser')
     console.log("Error getting document:", error);
 });
 
-// get study info for past 7 days
-let d = new Date();
-let start = new Date(now.getFullYear(), 0, 0);
-let diff = (d - start) + ((start.getTimezoneOffset() - d.getTimezoneOffset()) * 60 * 1000);
-let oneDay = 1000 * 60 * 60 * 24;
-let dayKey = Math.floor(diff / oneDay);
-console.log('Day of year: ' + dayKey);
+let studiedHours = [];
 
-// search for past 7 days
-lastWeekDay = dayKey - 7;
+for (day in studyInfo) {
+    studiedHours.push(studyInfo[day].study);
+}
 
-
-studiedHours = [3.5, 4, 2.5, 5, 0.5, 6, 3.25];
 let avgStudy = studiedHours.reduce((a, b) => a + b, 0) / studiedHours.length;
 let avgBreak = 0;
 

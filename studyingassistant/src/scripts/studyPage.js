@@ -64,6 +64,8 @@ ipcRenderer.invoke('getUser')
 
         totalStudiedTime = studyTimerDB[dayName].study;
         totalBreakTime = studyTimerDB[dayName].break;
+
+        clearHistory(); // erase the data of the previous week so it can be written with this weeks
         
         let studiedMinutes = Math.floor(totalStudiedTime/60);
         let studiedSeconds = totalStudiedTime % 60;
@@ -101,12 +103,26 @@ totalBreakTime++;
 // retrieve current day (in the format: May 11 2020)
 var d = new Date();
 var dayName = d.toString().split(' ')[1] + " " + d.toString().split(' ')[2] +  " " + d.toString().split(' ')[3];
-// get unique day number
-var start = new Date(now.getFullYear(), 0, 0);
-var diff = (d - start) + ((start.getTimezoneOffset() - d.getTimezoneOffset()) * 60 * 1000);
-var oneDay = 1000 * 60 * 60 * 24;
-var dayKey = Math.floor(diff / oneDay);
-console.log('Day of year: ' + dayKey);
+
+// clearing study history
+const clearHistory = () => {
+    if (dayName == 'Sun') {
+        daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        for (day in daysOfWeek) {
+            studyTimerDB[day] = {
+                study: 0, 
+                break: 0
+            }
+            db.collection("users").doc(emailVal).update({studyTimeTrackers: studyTimerDB})
+        }
+    } else if (dayName == 'Sat') {
+        studyTimerDB['Sun'] = {
+            study: 0, 
+            break: 0
+        }
+        db.collection("users").doc(emailVal).update({studyTimeTrackers: studyTimerDB})
+    }
+}
 
 console.log(dayName);
 
@@ -306,8 +322,7 @@ function updateTimerDB() {
 
     studyTimerDB[dayName] = {
         study: totalStudiedTime, 
-        break: totalBreakTime,
-        day: dayKey // unique day of year for easier analytics page extraction
+        break: totalBreakTime
     }
 
     db.collection("users").doc(emailVal).update({studyTimeTrackers: studyTimerDB})
