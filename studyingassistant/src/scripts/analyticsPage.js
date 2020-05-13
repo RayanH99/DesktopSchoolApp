@@ -22,8 +22,8 @@ ipcRenderer.invoke('getUser')
 .then(function(doc) {
     if (doc.exists){
         studyInfo = doc.data().studyTimeTrackers;
-        prevStudyHours = doc.data().prevStudy;
-        prevBreakHours = doc.data().prevBreak;
+        prevStudyHours = doc.data().prevStudyAvg;
+        prevBreakHours = doc.data().prevBreakAvg;
         calculateAvg();
     }
     else
@@ -45,7 +45,6 @@ const calculateAvg = () => {
     
     let avgStudy = studiedHours.reduce((a, b) => a + b, 0) / studiedHours.length;
     let avgBreak = breakHours.reduce((a, b) => a + b, 0) / breakHours.length;
-    console.log(prevBreakHours);
     
     document.getElementById("avgStudy").innerText = 'Average Time Studied: '+avgStudy.toFixed(2)+' hours';
     document.getElementById("avgBreak").innerText = 'Average Break Time: '+avgBreak.toFixed(2)+' hours';
