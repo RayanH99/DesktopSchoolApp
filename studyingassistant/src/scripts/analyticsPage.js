@@ -7,7 +7,8 @@ var Chart = require('chart.js');
 // request user info from backend
 let username;
 let emailVal;
-let studyInfo;
+let prevBreakHours;
+let prevStudyHours;
 
 ipcRenderer.invoke('getUser')
 .then((result) => {
@@ -21,7 +22,9 @@ ipcRenderer.invoke('getUser')
 .then(function(doc) {
     if (doc.exists){
         studyInfo = doc.data().studyTimeTrackers;
-        console.log(studyInfo);
+        prevStudyHours = doc.data().prevStudy;
+        prevBreakHours = doc.data().prevBreak;
+        calculateAvg();
     }
     else
         console.log("No such document!");
@@ -31,16 +34,24 @@ ipcRenderer.invoke('getUser')
 });
 
 let studiedHours = [];
+let breakHours = [];
+let daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-for (day in studyInfo) {
-    studiedHours.push(studyInfo[day].study);
+const calculateAvg = () => {
+    for (day in daysOfWeek) {
+        studiedHours.push(studyInfo[daysOfWeek[day]].study);
+        breakHours.push(studyInfo[daysOfWeek[day]].break);
+    }
+    
+    let avgStudy = studiedHours.reduce((a, b) => a + b, 0) / studiedHours.length;
+    let avgBreak = breakHours.reduce((a, b) => a + b, 0) / breakHours.length;
+    console.log(prevBreakHours);
+    
+    document.getElementById("avgStudy").innerText = 'Average Time Studied: '+avgStudy.toFixed(2)+' hours';
+    document.getElementById("avgBreak").innerText = 'Average Break Time: '+avgBreak.toFixed(2)+' hours';
+    document.getElementById("prevAvgStudy").innerText = 'Last Week Average Study Time: '+prevStudyHours.toFixed(2)+' hours';
+    document.getElementById("prevAvgBreak").innerText = 'Last Week Average Break Time: '+prevBreakHours.toFixed(2)+' hours';
 }
-
-let avgStudy = studiedHours.reduce((a, b) => a + b, 0) / studiedHours.length;
-let avgBreak = 0;
-
-document.getElementById("avgStudy").innerText = 'Average Time Studied: '+avgStudy.toFixed(2)+' hours';
-document.getElementById("avgBreak").innerText = 'Average Break Time: '+avgBreak.toFixed(2)+' hours';
 
 var ctx = document.getElementById('chart').getContext('2d');
 var myChart = new Chart(ctx, {
