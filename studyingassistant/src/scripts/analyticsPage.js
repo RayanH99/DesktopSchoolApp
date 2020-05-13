@@ -7,6 +7,7 @@ var Chart = require('chart.js');
 // request user info from backend
 let username;
 let emailVal;
+let studyInfo;
 
 ipcRenderer.invoke('getUser')
 .then((result) => {
@@ -19,8 +20,8 @@ ipcRenderer.invoke('getUser')
 })
 .then(function(doc) {
     if (doc.exists){
-        console.log("connection established.");
-        console.log(doc.data());
+        studyInfo = doc.data().studyTimeTrackers;
+        console.log(studyInfo);
     }
     else
         console.log("No such document!");
@@ -28,6 +29,18 @@ ipcRenderer.invoke('getUser')
 .catch(function(error) {
     console.log("Error getting document:", error);
 });
+
+// get study info for past 7 days
+let d = new Date();
+let start = new Date(now.getFullYear(), 0, 0);
+let diff = (d - start) + ((start.getTimezoneOffset() - d.getTimezoneOffset()) * 60 * 1000);
+let oneDay = 1000 * 60 * 60 * 24;
+let dayKey = Math.floor(diff / oneDay);
+console.log('Day of year: ' + dayKey);
+
+// search for past 7 days
+lastWeekDay = dayKey - 7;
+
 
 studiedHours = [3.5, 4, 2.5, 5, 0.5, 6, 3.25];
 let avgStudy = studiedHours.reduce((a, b) => a + b, 0) / studiedHours.length;

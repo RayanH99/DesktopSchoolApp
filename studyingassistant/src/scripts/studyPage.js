@@ -101,6 +101,12 @@ totalBreakTime++;
 // retrieve current day (in the format: May 11 2020)
 var d = new Date();
 var dayName = d.toString().split(' ')[1] + " " + d.toString().split(' ')[2] +  " " + d.toString().split(' ')[3];
+// get unique day number
+var start = new Date(now.getFullYear(), 0, 0);
+var diff = (d - start) + ((start.getTimezoneOffset() - d.getTimezoneOffset()) * 60 * 1000);
+var oneDay = 1000 * 60 * 60 * 24;
+var dayKey = Math.floor(diff / oneDay);
+console.log('Day of year: ' + dayKey);
 
 console.log(dayName);
 
@@ -296,11 +302,12 @@ function updateTimeTrackers(){
 }
 
 //update tracking timers in the db when the user presses return
-function updateTimerDB(){
+function updateTimerDB() {
 
     studyTimerDB[dayName] = {
         study: totalStudiedTime, 
-        break: totalBreakTime
+        break: totalBreakTime,
+        day: dayKey // unique day of year for easier analytics page extraction
     }
 
     db.collection("users").doc(emailVal).update({studyTimeTrackers: studyTimerDB})
