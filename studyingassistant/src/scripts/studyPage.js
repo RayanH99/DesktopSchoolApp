@@ -47,6 +47,7 @@ const {ipcRenderer} = require('electron');
 // request user info from backend
 let username;
 let emailVal;
+let daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 ipcRenderer.invoke('getUser')
 .then((result) => {
@@ -61,6 +62,15 @@ ipcRenderer.invoke('getUser')
     if (doc.exists){
         
         studyTimerDB = doc.data().studyTimeTrackers;
+
+        // one time use, delete after - too lazy to create the schema model in the firebase console LOL
+        // for (day in daysOfWeek) {
+        //     studyTimerDB[daysOfWeek[day]] = {
+        //         study: 0, 
+        //         break: 0
+        //     }
+        //     db.collection("users").doc(emailVal).update({studyTimeTrackers: studyTimerDB})
+        // }
 
         totalStudiedTime = studyTimerDB[dayName].study;
         totalBreakTime = studyTimerDB[dayName].break;
@@ -102,25 +112,44 @@ totalBreakTime++;
 
 // retrieve current day (in the format: May 11 2020)
 var d = new Date();
-var dayName = d.toString().split(' ')[1] + " " + d.toString().split(' ')[2] +  " " + d.toString().split(' ')[3];
+var dayName = d.toString().split(' ')[0];
+
 
 // clearing study history
 const clearHistory = () => {
+    // clear history from Monday onwards excluding Sunday otherwise it will keep resetting to zero if it's Sunday every time the app is opened/closed
     if (dayName == 'Sun') {
-        daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
         for (day in daysOfWeek) {
-            studyTimerDB[day] = {
+            studyTimerDB[daysOfWeek[day]] = {
                 study: 0, 
                 break: 0
             }
             db.collection("users").doc(emailVal).update({studyTimeTrackers: studyTimerDB})
         }
     } else if (dayName == 'Sat') {
+        // update previous weeks average study/break record
+        let studiedHours = [];
+        let breakHours = [];
+
+        for (day in daysOfWeek) {
+            studiedHours.push(studyTimerDB[daysOfWeek[day]].study);
+            breakHours.push(studyTimerDB[daysOfWeek[day]].break);
+        }
+
+        let lastWeekStudyAvg = studiedHours.reduce((a, b) => a + b, 0) / studiedHours.length;
+        let lastWeekBreakAvg = breakHours.reduce((a, b) => a + b, 0) / breakHours.length;
+
+        // clear history Sunday's history
         studyTimerDB['Sun'] = {
             study: 0, 
             break: 0
         }
-        db.collection("users").doc(emailVal).update({studyTimeTrackers: studyTimerDB})
+
+        db.collection("users").doc(emailVal).update({
+            studyTimeTrackers: studyTimerDB, 
+            prevStudyAvg: lastWeekStudyAvg, 
+            prevBreakAvg: lastWeekBreakAvg
+        });
     }
 }
 
