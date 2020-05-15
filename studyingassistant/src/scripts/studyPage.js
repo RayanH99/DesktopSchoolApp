@@ -85,8 +85,6 @@ ipcRenderer.invoke('getUser')
     
         timeStudied.innerHTML = studiedMinutes + ":" + studiedSeconds;
 
-        totalStudiedTime++;
-
         let breakMinutes = Math.floor(totalBreakTime/60);
         let breakSeconds = totalBreakTime % 60;
     
@@ -94,9 +92,6 @@ ipcRenderer.invoke('getUser')
         breakSeconds = breakSeconds < 10 ? '0' + breakSeconds : breakSeconds;
     
         timeOnBreak.innerHTML = breakMinutes + ":" + breakSeconds;
-
-        totalBreakTime++;
-
     }
     else
         console.log("No such document!");
