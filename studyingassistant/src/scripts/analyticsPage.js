@@ -40,15 +40,15 @@ let daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const calculateAvg = () => {
     for (day in daysOfWeek) {
-        studiedHours.push(((studyInfo[daysOfWeek[day]].study)/3600).toFixed(2)); // divide by 3600 to convert seconds to hours
-        breakHours.push(((studyInfo[daysOfWeek[day]].break)/3600).toFixed(2)); // toFixed(2) stops it at 2 decimal places
+        studiedHours.push((studyInfo[daysOfWeek[day]].study)/3600); // divide by 3600 to convert seconds to hours
+        breakHours.push((studyInfo[daysOfWeek[day]].break)/3600); // toFixed(2) stops it at 2 decimal places
     }
     
-    let avgStudy = (studiedHours.reduce((a, b) => a + b, 0) / studiedHours.length);
-    let avgBreak = (breakHours.reduce((a, b) => a + b, 0) / breakHours.length);
+    let avgStudyTime = (studiedHours.reduce((a, b) => a + b, 0) / studiedHours.length);
+    let avgBreakTime = (breakHours.reduce((a, b) => a + b, 0) / breakHours.length);
     
-    document.getElementById("avgStudy").innerText = 'Average Time Studied: '+avgStudy.toFixed(2)+' hours';
-    document.getElementById("avgBreak").innerText = 'Average Break Time: '+avgBreak.toFixed(2)+' hours';
+    document.getElementById("avgStudy").innerText = 'Average Time Studied: '+avgStudyTime.toFixed(2)+' hours';
+    document.getElementById("avgBreak").innerText = 'Average Break Time: '+avgBreakTime.toFixed(2)+' hours';
     document.getElementById("prevAvgStudy").innerText = 'Last Week Average Study Time: '+(prevStudyHours/3600).toFixed(2)+' hours';
     document.getElementById("prevAvgBreak").innerText = 'Last Week Average Break Time: '+(prevBreakHours/3600).toFixed(2)+' hours';
 }

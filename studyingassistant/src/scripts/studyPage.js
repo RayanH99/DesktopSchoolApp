@@ -114,6 +114,7 @@ var dayName = d.toString().split(' ')[0];
 const clearHistory = () => {
     // clear history from Monday onwards excluding Sunday otherwise it will keep resetting to zero if it's Sunday every time the app is opened/closed
     if (dayName == 'Sun') {
+        console.log(dayName);
         for (day in daysOfWeek) {
             studyTimerDB[daysOfWeek[day]] = {
                 study: 0, 
