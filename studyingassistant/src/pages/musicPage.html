@@ -4,6 +4,7 @@
     <title>StudyApp</title>
     <link rel="stylesheet" type="text/css" href="../styles/main.css">
     <link rel="stylesheet" type="text/css" href="../styles/reminders.css">
+    <link rel="stylesheet" type="text/css" href="../styles/musicPage.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     <meta charset='utf-8'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -17,22 +18,25 @@
 </head>
 <body>
     <p id="clock"></p>
-    <!-- <div class="reminders-bg">
-        <img src="../public/icons/alarm.png">
-    </div> -->
     <div class="container">
+
         <h1 id="heading">Study Playlist 🎧</h1>
+        <p id="subMessage">Access your favourite study music</p>
+
         <a href="mainWindow.html" class="return-button">
             <img src="../public/icons/back.png" style="width: 55px;">
             <span>Return</span>
         </a>
+
         <br></br>
 
-        <!-- create page here -->
-        <audio id="myAudio" controls>
-            <source src="../public/audio/sample_track.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
+        <div class="card top-buffer hoverEffect">
+            <div class="card-body">
+                <img class="card-title spotify-logo" src="../public/icons/spotify2.png">
+                <h5>Millions of songs free, on Spotify®.</h5>
+                <a href="" class="btn btn-success cardBtn stretched-link">Connect</a>
+            </div>
+        </div>
 
     </div>
 
