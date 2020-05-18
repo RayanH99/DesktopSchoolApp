@@ -32,7 +32,7 @@ ipcMain.handle('logoutUser', (event)=>
 server = express();
 
 server.get('/', (req, res) => {
-    res.send("Server connected. Welcome.");
+    res.send("This is where the user will be prompted to sign-in to Spotify.");
 });
 
 server.listen(8888, ()=> {
