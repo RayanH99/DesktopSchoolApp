@@ -47,7 +47,8 @@ const {ipcRenderer} = require('electron');
 // request user info from backend
 let username;
 let emailVal;
-let daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+// use for whenever a reset is needed in testing only
+let daysOfWeek = ['13 May 2020','14 May 2020','15 May 2020','16 May 2020','17 May 2020','18 May 2020'];
 
 ipcRenderer.invoke('getUser')
 .then((result) => {
@@ -74,8 +75,6 @@ ipcRenderer.invoke('getUser')
 
         totalStudiedTime = studyTimerDB[dayName].study;
         totalBreakTime = studyTimerDB[dayName].break;
-
-        clearHistory(); // erase the data of the previous week so it can be written with this weeks
         
         let studiedMinutes = Math.floor(totalStudiedTime/60);
         let studiedSeconds = totalStudiedTime % 60;
@@ -105,50 +104,10 @@ updateTimer();
 totalStudiedTime++; 
 totalBreakTime++;
 
-// retrieve current day (in the format: May 11 2020)
+// retrieve current day (in the format: 17 May 2020)
 var d = new Date();
-var dayName = d.toString().split(' ')[0];
-
-
-// clearing study history
-const clearHistory = () => {
-    // clear history from Monday onwards excluding Sunday otherwise it will keep resetting to zero if it's Sunday every time the app is opened/closed
-    if (dayName == 'Sun') {
-        console.log(dayName);
-        for (day in daysOfWeek) {
-            studyTimerDB[daysOfWeek[day]] = {
-                study: 0, 
-                break: 0
-            }
-            db.collection("users").doc(emailVal).update({studyTimeTrackers: studyTimerDB})
-        }
-    } else if (dayName == 'Sat') {
-        // update previous weeks average study/break record
-        let studiedHours = [];
-        let breakHours = [];
-
-        for (day in daysOfWeek) {
-            studiedHours.push(studyTimerDB[daysOfWeek[day]].study);
-            breakHours.push(studyTimerDB[daysOfWeek[day]].break);
-        }
-
-        let lastWeekStudyAvg = studiedHours.reduce((a, b) => a + b, 0) / studiedHours.length;
-        let lastWeekBreakAvg = breakHours.reduce((a, b) => a + b, 0) / breakHours.length;
-
-        // clear history Sunday's history
-        studyTimerDB['Sun'] = {
-            study: 0, 
-            break: 0
-        }
-
-        db.collection("users").doc(emailVal).update({
-            studyTimeTrackers: studyTimerDB, 
-            prevStudyAvg: lastWeekStudyAvg, 
-            prevBreakAvg: lastWeekBreakAvg
-        });
-    }
-}
-
+// change to dd/mm/yyyy
+var dayName = d.toString().split(' ')[2] + " " + d.toString().split(' ')[1] +  " " + d.toString().split(' ')[3];
 console.log(dayName);
 
 function updateTimer(){
