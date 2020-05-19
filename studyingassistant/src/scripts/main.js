@@ -2,21 +2,24 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 const express = require('express');
-
+const request = require('request');
+const cors = require('cors');
+const querystring = require('querystring');
+const cookieParser = require('cookie-parser');
 const {app, BrowserWindow, Menu, Notification, ipcMain} = electron;
 
+// application setup and user login
 let mainWindow;
-
 var currUser = new Object();
 
-//receives login info from user after login
+// receives login info from user after login
 ipcMain.on('sendUserInfo', (event, user) =>
 {
     currUser.accountHolder = user;
     currUser.currName = user.email;
 });
 
-//sends back user info after reaching the welcome page
+// sends back user info after reaching the welcome page
 ipcMain.handle('getUser', (event) => 
 {
     return currUser;
@@ -24,20 +27,126 @@ ipcMain.handle('getUser', (event) =>
 
 ipcMain.handle('logoutUser', (event)=>
 {
-    //clear info
+    // clear info
     currUser = new Object();
 });
 
-// backend setup for API request handling
+
+
+/***** SPOTIFY BACKEND SETUP ALL GOES HERE *****/
+
+// dependency setups
+var client_id = 'CLIENT_ID'; // your client ID
+var client_secret = 'CLIENT_SECRET'; // your secret
+var redirect_uri = 'REDIRECT_URI'; // your redirect uri
+
+// function to generate a random string containing numbers and letters
+const generateRandomString = (length) => {
+    const text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i=0; i<length; i++) {
+        text += possible.charAt(Math.floor(Math.random()*possible.length));
+    }
+
+    return text;
+}
+
+var stateKey = 'spotify_auth_state';
+
+// middleware setup
 server = express();
+server.use(express.static(__dirname+'/public'))
+      .use(cors())
+      .use(cookieParser());
 
 server.get('/', (req, res) => {
-    res.send("This is where the user will be prompted to sign-in to Spotify.");
+    var state = generateRandomString(16);
+    res.cookie(stateKey, state);
+    
+    // application requests authorization
+    var scope = 'user-read-private user-read-email'; // asking for permissions (can be modified)
+    res.redirect('https://accounts.spotify.com/authorize?'+
+        querystring.stringify({
+            response_type: 'code',
+            client_id: client_id,
+            scope: scope,
+            redirect_uri: redirect_uri,
+            state: state
+        })
+    );
 });
 
-server.listen(8888, ()=> {
-    console.log("API Server started");
+server.get('/callback', (req, res) => {
+
+    // your application requests refresh and access tokens
+    // after checking the state parameter
+  
+    var code = req.query.code || null;
+    var state = req.query.state || null;
+    var storedState = req.cookies ? req.cookies[stateKey] : null;
+  
+    if (state === null || state !== storedState) {
+      res.redirect('/#' +
+        querystring.stringify({
+            error: 'state_mismatch'
+        }));
+    } else {
+        res.clearCookie(stateKey);
+        var authOptions = {
+                url: 'https://accounts.spotify.com/api/token',
+                form: {
+                code: code,
+                redirect_uri: redirect_uri,
+                grant_type: 'authorization_code'
+            },
+            headers: {
+                'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+            },
+            json: true
+        };
+    
+        request.post(authOptions, function(error, response, body) {
+            if (!error && response.statusCode === 200) {
+    
+            var access_token = body.access_token,
+                refresh_token = body.refresh_token;
+    
+            var options = {
+                url: 'https://api.spotify.com/v1/me',
+                headers: { 'Authorization': 'Bearer ' + access_token },
+                json: true
+            };
+    
+            // use the access token to access the Spotify Web API
+            request.get(options, function(error, response, body) {
+                console.log(body);
+            });
+    
+            // we can also pass the token to the browser to make requests from there
+            res.redirect('/#' +
+                querystring.stringify({
+                    access_token: access_token,
+                    refresh_token: refresh_token
+                }));
+            } else {
+            res.redirect('/#' +
+                querystring.stringify({
+                    error: 'invalid_token'
+                }));
+            }
+        });
+    }
 });
+
+// initialize port
+server.listen(8888, ()=> {
+    console.log("API Server started on port:8888");
+});
+
+
+
+/***** WINDOW APPLICATION SETUP ALL GOES HERE *****/
 
 // Listen for app to be ready
 app.on('ready', function(){
@@ -50,7 +159,7 @@ app.on('ready', function(){
         slashes: true
     }));
 
-    //****we'll keep this commented out for now until we're done using developer tools */
+    /****we'll keep this commented out for now until we're done using developer tools ****/
     //build menu from template
     //const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
     //Menu.setApplicationMenu(mainMenu);
