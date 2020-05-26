@@ -36,105 +36,35 @@ ipcMain.handle('logoutUser', (event)=>
 /***** SPOTIFY BACKEND SETUP ALL GOES HERE *****/
 
 // dependency setups
-var client_id = 'CLIENT_ID'; // your client ID
-var client_secret = 'CLIENT_SECRET'; // your secret
-var redirect_uri = 'REDIRECT_URI'; // your redirect uri
+var client_id = 'b36df35577fa4fffa5e11564df2f5132'; // your client ID
+var client_secret = '8965b3446a124dec9ff30eb21bd68472'; // your secret
 
-// function to generate a random string containing numbers and letters
-const generateRandomString = (length) => {
-    let text = '';
-    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (let i=0; i<length; i++) {
-        text += possible.charAt(Math.floor(Math.random()*possible.length));
-    }
-
-    return text;
-}
-
-var stateKey = 'spotify_auth_state';
-
-// middleware setup
-server = express();
-server.use(express.static(__dirname+'/public'))
-      .use(cors())
-      .use(cookieParser());
-
-server.get('/', (req, res) => {
-    var state = generateRandomString(16);
-    res.cookie(stateKey, state);
-    
-    // application requests authorization
-    var scope = 'user-read-private user-read-email'; // asking for permissions (can be modified)
-    res.redirect('https://accounts.spotify.com/authorize?'+
-        querystring.stringify({
-            response_type: 'code',
-            client_id: client_id,
-            scope: scope,
-            redirect_uri: redirect_uri,
-            state: state
-        })
-    );
-});
-
-server.get('/callback', (req, res) => {
-
-    // your application requests refresh and access tokens
-    // after checking the state parameter
+// your application requests authorization
+var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: {
+      'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+    },
+    form: {
+      grant_type: 'client_credentials'
+    },
+    json: true
+};
   
-    var code = req.query.code || null;
-    var state = req.query.state || null;
-    var storedState = req.cookies ? req.cookies[stateKey] : null;
+request.post(authOptions, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
   
-    if (state === null || state !== storedState) {
-      res.redirect('/#' +
-        querystring.stringify({
-            error: 'state_mismatch'
-        }));
-    } else {
-        res.clearCookie(stateKey);
-        var authOptions = {
-                url: 'https://accounts.spotify.com/api/token',
-                form: {
-                code: code,
-                redirect_uri: redirect_uri,
-                grant_type: 'authorization_code'
-            },
+        // use the access token to access the Spotify Web API
+        var token = body.access_token;
+        var options = {
+            url: 'https://api.spotify.com/v1/users/jmperezperez',
             headers: {
-                'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+            'Authorization': 'Bearer ' + token
             },
             json: true
         };
-    
-        request.post(authOptions, function(error, response, body) {
-            if (!error && response.statusCode === 200) {
-    
-            var access_token = body.access_token,
-                refresh_token = body.refresh_token;
-    
-            var options = {
-                url: 'https://api.spotify.com/v1/me',
-                headers: { 'Authorization': 'Bearer ' + access_token },
-                json: true
-            };
-    
-            // use the access token to access the Spotify Web API
-            request.get(options, function(error, response, body) {
-                console.log(body);
-            });
-    
-            // we can also pass the token to the browser to make requests from there
-            res.redirect('/#' +
-                querystring.stringify({
-                    access_token: access_token,
-                    refresh_token: refresh_token
-                }));
-            } else {
-            res.redirect('/#' +
-                querystring.stringify({
-                    error: 'invalid_token'
-                }));
-            }
+        request.get(options, function(error, response, body) {
+            console.log(body);
         });
     }
 });
