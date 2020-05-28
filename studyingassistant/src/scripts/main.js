@@ -34,6 +34,7 @@ ipcMain.handle('logoutUser', (event)=>
 
 
 /***** SPOTIFY BACKEND SETUP ALL GOES HERE *****/
+var server = express();
 
 // dependency setups
 var client_id = 'b36df35577fa4fffa5e11564df2f5132'; // your client ID
