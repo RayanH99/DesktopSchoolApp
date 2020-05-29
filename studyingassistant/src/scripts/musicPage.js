@@ -7,5 +7,5 @@ var connect = document.getElementById("connectBtn");
 
 // open Spotify Server
 connect.addEventListener("click", () => {
-    require("electron").shell.openExternal('http://localhost:8888');
+    require("electron").shell.openExternal('http://localhost:8888/');
 });
