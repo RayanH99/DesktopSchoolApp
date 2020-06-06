@@ -50,7 +50,7 @@ ipcRenderer.invoke('getUser')
                     createTask(newID, desc, dateVal, timeVal);
                     //add to database
                     todoItems['Task'+numItems] = {Desc: desc, Date: dateVal, Time: timeVal, ItemID: newID};
-                    db.collection("users").doc(emailVal).set({
+                    db.collection("users").doc(emailVal).update({
                         name: doc.data().name,
                         remindersList: todoItems,
                         reminders: numItems
@@ -147,7 +147,7 @@ ipcRenderer.invoke('getUser')
                     }
 
                     //remove from database
-                    db.collection("users").doc(emailVal).set({
+                    db.collection("users").doc(emailVal).update({
                         name: doc.data().name,
                         remindersList: todoItems,
                         reminders: numItems
@@ -182,7 +182,7 @@ ipcRenderer.invoke('getUser')
                         }
                     }
                     //remove from database
-                    db.collection("users").doc(emailVal).set({
+                    db.collection("users").doc(emailVal).update({
                         name: doc.data().name,
                         remindersList: todoItems,
                         reminders: numItems
