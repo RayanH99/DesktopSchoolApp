@@ -2,10 +2,9 @@ require('../scripts/dbConnection');
 //notifications
 const notifier = require('node-notifier');
 const path = require('path'); //going to use this to replace the icon later
-
 var signupBtn = document.getElementById("submitBtn");
-
 var db = firebase.firestore();
+
 
 signupBtn.addEventListener('click', function()
 {
@@ -16,9 +15,15 @@ signupBtn.addEventListener('click', function()
 
     firebase.auth().createUserWithEmailAndPassword(emailField, passField)
     .then(function(){
-        // Add a new document in collection "cities"
+        // Add a new document in collection "users"
         db.collection("users").doc(emailField).set({
-            name: nameField
+            name: nameField,
+            portalLink: "https://cap.mcmaster.ca/mcauth/login.jsp?app_id=1505&app_name=Avenue",
+            prevBreakAvg: 0,
+            prevStudyAvg: 0,
+            reminders: 0,
+            remindersList: {},
+            studyTimeTrackers: {},
         })
         .then(function() {
             console.log("Document successfully written!");
