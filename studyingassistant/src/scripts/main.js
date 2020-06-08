@@ -123,13 +123,13 @@ server.get('/callback', function(req, res) {
                     console.log(body);
                 });
                 // we can also pass the token to the browser to make requests from there
-                res.redirect('/#' +
+                res.redirect('/?' +
                 querystring.stringify({
                     access_token: access_token,
                     refresh_token: refresh_token
                 }));
             } else {
-            res.redirect('/#' +
+            res.redirect('/?' +
               querystring.stringify({
                 error: 'invalid_token'
               }));
@@ -138,8 +138,11 @@ server.get('/callback', function(req, res) {
     }
 });
 
+// this is the redirect page we lead the user to
 server.get('/', function(req, res) {
-    res.send('hi');
+    var accessToken = req.query.access_token;
+    var refreshToken = req.query.refresh_token;
+    res.send('access token: '+accessToken+' and refresh token: '+refreshToken);
 });
       
 server.get('/refresh_token', function(req, res) {
