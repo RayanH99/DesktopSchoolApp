@@ -38,10 +38,10 @@ ipcMain.handle('logoutUser', (event)=>
 // dependency setups
 var client_id = 'b36df35577fa4fffa5e11564df2f5132'; // your client ID
 var client_secret = '8965b3446a124dec9ff30eb21bd68472'; // your secret
-var redirect_uri = 'REDIRECT_URI'; // your redirect uri
+var redirect_uri = 'http://localhost:8888/callback'; // your redirect uri
 
 // function to generate a random string containing numbers and letters
-const generateRandomString = (length) => {
+var generateRandomString = function(length) {
     let text = '';
     let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -57,11 +57,10 @@ var stateKey = 'spotify_auth_state';
 // middleware setup
 var server = express();
 
-server.use(express.static(__dirname+'/public'))
-      .use(cors())
+server.use(cors())
       .use(cookieParser());
 
-server.get('/', (req, res) => {
+server.get('/login', (req, res) => {
     var state = generateRandomString(16);
     res.cookie(stateKey, state);
     
@@ -121,15 +120,14 @@ server.get('/callback', function(req, res) {
         
                 // use the access token to access the Spotify Web API
                 request.get(options, function(error, response, body) {
-                console.log(body);
-            });
-    
-            // we can also pass the token to the browser to make requests from there
-            res.redirect('/#' +
-              querystring.stringify({
-                access_token: access_token,
-                refresh_token: refresh_token
-              }));
+                    console.log(body);
+                });
+                // we can also pass the token to the browser to make requests from there
+                res.redirect('/#' +
+                querystring.stringify({
+                    access_token: access_token,
+                    refresh_token: refresh_token
+                }));
             } else {
             res.redirect('/#' +
               querystring.stringify({
@@ -138,6 +136,10 @@ server.get('/callback', function(req, res) {
           }
         });
     }
+});
+
+server.get('/', function(req, res) {
+    res.send('hi');
 });
       
 server.get('/refresh_token', function(req, res) {
