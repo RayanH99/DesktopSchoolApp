@@ -180,7 +180,8 @@ server.listen(8888, ()=> {
 // Listen for app to be ready
 app.on('ready', function(){
     // Create new window
-    mainWindow = new BrowserWindow({width:800, height:640, webPreferences: {nodeIntegration: true}});
+    mainWindow = new BrowserWindow({width:800, height:640, webPreferences: {nodeIntegration: true}, icon: path.join(__dirname, '../public/icons/logo_1.png')});
+
     // Load html into window
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, '../pages/loginPage.html'),

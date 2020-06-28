@@ -1,5 +1,6 @@
 // local date and time script
 const notifier = require('node-notifier'); // notifications
+const path = require('path');
 var notifs = []; // store all reminder notifications in here
 
 // connect to DB
@@ -131,7 +132,7 @@ function display_clock() {
             {
             title: "The Study App",
             message: notifs[reminder][1], // extract message from reminder
-            // icon: path.join(__dirname, 'coulson.jpg'),
+            icon: path.join(__dirname, '../public/icons/logo_1.png'),
             sound: true,
             wait: true,
             },
